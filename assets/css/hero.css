@@ -1,0 +1,187 @@
+/* ===========================================
+   HERO
+=========================================== */
+
+.hero{
+
+    width:90%;
+
+    max-width:1400px;
+
+    height:520px;
+
+    margin:50px auto;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+    background:url("../images/hero.png");
+
+    background-size:cover;
+
+    background-position:center;
+
+}
+
+
+/* Dark Overlay */
+
+.hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+
+        90deg,
+
+        rgba(8,28,66,.88),
+
+        rgba(75, 93, 126, 0.6),
+
+        rgba(8,28,66,.35)
+
+    );
+
+}
+
+
+/* Hero Content */
+
+.hero-left{
+
+    position:relative;
+
+    z-index:2;
+
+    width:55%;
+
+    padding-left:70px;
+
+}
+
+
+
+/* Badge */
+
+.badge{
+
+    display:inline-block;
+
+    padding:10px 22px;
+
+    border-radius:40px;
+
+    background:rgba(255,255,255,.18);
+
+    backdrop-filter:blur(8px);
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+/* Heading */
+
+.hero h1{
+
+    color:white;
+
+    font-size:58px;
+
+    line-height:74px;
+
+    margin-bottom:20px;
+
+    font-weight:700;
+
+}
+
+
+
+.hero h1 span{
+
+    color:#59c3ff;
+
+}
+
+
+
+/* Paragraph */
+
+.hero p{
+
+    color:#f2f2f2;
+
+    font-size:20px;
+
+    line-height:34px;
+
+    max-width:650px;
+
+    margin-bottom:35px;
+
+}
+
+
+
+/* Button */
+
+.hero button{
+
+    background:#0d8bff;
+
+    color:white;
+
+    padding:18px 45px;
+
+    border-radius:50px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+
+
+.hero button:hover{
+
+    background:white;
+
+    color:#0d8bff;
+
+    transform:translateY(-5px);
+
+}
+
+
+
+/* Hide Right Side */
+
+.hero-right{
+
+    display:none;
+
+}

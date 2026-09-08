@@ -1,0 +1,282 @@
+/* ==========================================================
+                    INSURANCE SEARCH
+========================================================== */
+
+.insurance-search{
+
+    margin-bottom:25px;
+
+    position:relative;
+
+}
+
+.insurance-search i{
+
+    position:absolute;
+
+    left:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#64748b;
+
+}
+
+.insurance-search input{
+
+    width:100%;
+
+    padding:15px 20px 15px 48px;
+
+    border:1px solid #dbeafe;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.25s;
+
+}
+
+.insurance-search input:focus{
+
+    border-color:#0f4c81;
+
+    box-shadow:0 0 0 3px rgba(15,76,129,.10);
+
+}
+
+
+/* ==========================================================
+                    INSURANCE GRID
+========================================================== */
+
+.insurance-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+
+/* ==========================================================
+                    ITEM
+========================================================== */
+
+.insurance-item input{
+
+    display:none;
+
+}
+
+
+/* ==========================================================
+                    CARD
+========================================================== */
+
+.insurance-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px;
+
+    border:1px solid #dbeafe;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    background:#ffffff;
+
+    height:100%;
+
+}
+
+.insurance-card:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+
+/* ==========================================================
+                    LEFT SIDE
+========================================================== */
+
+.insurance-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+
+/* ==========================================================
+                    BADGE
+========================================================== */
+
+.insurance-badge{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    background:#0f4c81;
+
+    color:#ffffff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    flex-shrink:0;
+
+}
+
+
+/* ==========================================================
+                    TEXT
+========================================================== */
+
+.insurance-card h4{
+
+    margin:0 0 4px;
+
+    color:#0f4c81;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+.insurance-card p{
+
+    margin:0;
+
+    color:#64748b;
+
+    font-size:13px;
+
+}
+
+
+/* ==========================================================
+                    CHECK ICON
+========================================================== */
+
+.insurance-check{
+
+    width:28px;
+
+    height:28px;
+
+    border-radius:50%;
+
+    border:2px solid #cbd5e1;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:.25s;
+
+    flex-shrink:0;
+
+}
+
+.insurance-check i{
+
+    display:none;
+
+    color:#ffffff;
+
+    font-size:12px;
+
+}
+
+
+/* ==========================================================
+                    SELECTED CARD
+========================================================== */
+
+.insurance-item input:checked + .insurance-card{
+
+    border:2px solid #0f4c81;
+
+    background:#eef6ff;
+
+}
+
+.insurance-item input:checked + .insurance-card .insurance-check{
+
+    background:#0f4c81;
+
+    border-color:#0f4c81;
+
+}
+
+.insurance-item input:checked + .insurance-card .insurance-check i{
+
+    display:block;
+
+}
+
+
+/* ==========================================================
+                    RESPONSIVE
+========================================================== */
+
+@media(max-width:900px){
+
+    .insurance-list{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+.insurance-top-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-bottom:20px;
+
+}
+.insurance-back-row{
+
+    display:flex;
+    justify-content:flex-start;
+    margin-bottom:20px;
+
+}

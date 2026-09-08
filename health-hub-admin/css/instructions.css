@@ -1,0 +1,329 @@
+/* =====================================
+        INSTRUCTION MODULE
+===================================== */
+
+
+.instruction-info{
+
+    display:flex;
+
+    gap:20px;
+
+    background:#EEF6FF;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    margin-bottom:35px;
+
+}
+
+
+.instruction-info i{
+
+    font-size:40px;
+
+    color:#0F5DA9;
+
+}
+
+
+.instruction-info h4{
+
+    color:#0F5DA9;
+
+    margin-bottom:8px;
+
+}
+
+
+.instruction-info p{
+
+    color:#64748B;
+
+    line-height:26px;
+
+}
+
+
+
+
+
+.language-card{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:30px;
+
+    margin-bottom:30px;
+
+    border:1px solid #E2E8F0;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+}
+
+
+
+
+
+.language-header{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:12px 25px;
+
+    border-radius:30px;
+
+    font-weight:600;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.language-header.english{
+
+    background:#DBEAFE;
+
+    color:#2563EB;
+
+}
+
+
+
+.language-header.hindi{
+
+    background:#FEF3C7;
+
+    color:#B45309;
+
+}
+
+
+
+.language-header.regional{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+
+}
+
+
+
+
+
+.counter{
+
+    display:block;
+
+    text-align:right;
+
+    margin-top:8px;
+
+    color:#64748B;
+
+    font-size:13px;
+
+}
+
+
+
+
+
+.language-card textarea{
+
+    resize:vertical;
+
+    min-height:180px;
+
+}
+/* ==========================================================
+                INSTRUCTION BLOCK
+========================================================== */
+
+.instruction-block{
+
+    background:#ffffff;
+
+    border:1px solid #dbeafe;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-bottom:30px;
+
+}
+
+.instruction-language{
+
+    margin-bottom:30px;
+
+}
+
+.instruction-language:last-child{
+
+    margin-bottom:0;
+
+}
+
+.instruction-language h4{
+
+    color:#0F5DA9;
+
+    font-size:20px;
+
+    margin-bottom:18px;
+
+}
+
+.instruction-heading{
+
+    width:100%;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:#0F5DA9;
+
+    border:none;
+
+    border-bottom:2px solid #dbeafe;
+
+    padding:12px 0;
+
+    margin-bottom:18px;
+
+    outline:none;
+
+    background:transparent;
+
+}
+
+.instruction-heading:focus{
+
+    border-color:#0F5DA9;
+
+}
+
+.instruction-content{
+
+    width:100%;
+
+    min-height:170px;
+
+    resize:vertical;
+
+    border:1px solid #dbeafe;
+
+    border-radius:14px;
+
+    padding:18px;
+
+    font-size:15px;
+
+    line-height:28px;
+
+}
+
+.instruction-content::placeholder{
+
+    color:#94a3b8;
+
+    line-height:30px;
+
+}
+/* ==========================================
+        LANGUAGE CARD
+========================================== */
+
+.instruction-language-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    margin-bottom:30px;
+
+    border:1px solid #dbeafe;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+}
+
+.instruction-language-card h3{
+
+    color:#0F5DA9;
+
+    margin-bottom:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+/* ==========================================
+        WRITING AREA
+========================================== */
+
+.instruction-editor{
+
+    width:100%;
+
+    min-height:350px;
+
+    padding:25px;
+
+    border:2px solid #dbeafe;
+
+    border-radius:16px;
+
+    resize:vertical;
+
+    outline:none;
+
+    font-size:16px;
+
+    line-height:32px;
+
+    font-family:"Poppins",sans-serif;
+
+}
+
+.instruction-editor:focus{
+
+    border-color:#0F5DA9;
+
+}
+
+.instruction-editor::placeholder{
+
+    color:#94a3b8;
+
+    line-height:34px;
+
+    white-space:pre-line;
+
+}
+
+.add-heading{
+
+    margin-top:18px;
+
+}

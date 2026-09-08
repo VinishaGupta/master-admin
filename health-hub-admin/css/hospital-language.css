@@ -1,0 +1,128 @@
+/* ==========================================================
+                    HOSPITAL LANGUAGE
+========================================================== */
+
+#hospitalLanguageForm{
+
+    margin-top:25px;
+
+}
+
+
+/* ==========================================================
+                    FORM GROUP
+========================================================== */
+
+#hospitalLanguageForm .form-group{
+
+    margin-bottom:28px;
+
+}
+
+
+/* ==========================================================
+                    LABEL
+========================================================== */
+
+#hospitalLanguageForm label{
+
+    display:block;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#0f4c81;
+
+    margin-bottom:10px;
+
+}
+
+
+/* ==========================================================
+                    INPUT
+========================================================== */
+
+#hospitalLanguageForm input{
+
+    width:100%;
+
+    padding:14px 18px;
+
+    border:1px solid #dbeafe;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.25s;
+
+    background:#ffffff;
+
+    color:#334155;
+
+    font-family:"Poppins",sans-serif;
+
+}
+
+
+/* ==========================================================
+                    PLACEHOLDER
+========================================================== */
+
+#hospitalLanguageForm input::placeholder{
+
+    color:#94a3b8;
+
+}
+
+
+/* ==========================================================
+                    FOCUS
+========================================================== */
+
+#hospitalLanguageForm input:focus{
+
+    border-color:#0f4c81;
+
+    box-shadow:0 0 0 4px rgba(15,76,129,.08);
+
+}
+
+
+/* ==========================================================
+                    BUTTON ROW
+========================================================== */
+
+#hospitalLanguageForm .button-row{
+
+    margin-top:35px;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+}
+
+
+/* ==========================================================
+                    RESPONSIVE
+========================================================== */
+
+@media(max-width:768px){
+
+    #hospitalLanguageForm .button-row{
+
+        justify-content:stretch;
+
+    }
+
+    #hospitalLanguageForm .button-row button{
+
+        width:100%;
+
+    }
+
+}

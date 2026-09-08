@@ -1,0 +1,252 @@
+/* ==========================================================
+                    THERAPY SEARCH
+========================================================== */
+
+.therapy-search{
+
+    margin-bottom:25px;
+
+    position:relative;
+
+}
+
+.therapy-search i{
+
+    position:absolute;
+
+    left:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#64748b;
+
+}
+
+.therapy-search input{
+
+    width:100%;
+
+    padding:15px 20px 15px 48px;
+
+    border:1px solid #dbeafe;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+.therapy-search input:focus{
+
+    border-color:#0f4c81;
+
+}
+
+
+/* ==========================================================
+                    THERAPY GRID
+========================================================== */
+
+.therapy-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+
+/* ==========================================================
+                    HIDDEN CHECKBOX
+========================================================== */
+
+.therapy-item input{
+
+    display:none;
+
+}
+
+
+/* ==========================================================
+                    CARD
+========================================================== */
+
+.therapy-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px;
+
+    border:1px solid #dbeafe;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    background:#ffffff;
+
+    height:100%;
+
+}
+
+.therapy-card:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+
+/* ==========================================================
+                    LEFT
+========================================================== */
+
+.therapy-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+
+/* ==========================================================
+                    BADGE
+========================================================== */
+
+.therapy-badge{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    background:#0f4c81;
+
+    color:#ffffff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================================
+                    TEXT
+========================================================== */
+
+.therapy-card h4{
+
+    margin-bottom:4px;
+
+    color:#0f4c81;
+
+}
+
+.therapy-card p{
+
+    color:#64748b;
+
+    font-size:13px;
+
+}
+
+
+/* ==========================================================
+                    CHECK ICON
+========================================================== */
+
+.therapy-check{
+
+    width:28px;
+
+    height:28px;
+
+    border-radius:50%;
+
+    border:2px solid #cbd5e1;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:.25s;
+
+}
+
+.therapy-check i{
+
+    display:none;
+
+    color:#ffffff;
+
+    font-size:12px;
+
+}
+
+
+/* ==========================================================
+                    SELECTED
+========================================================== */
+
+.therapy-item input:checked + .therapy-card{
+
+    border:2px solid #0f4c81;
+
+    background:#eef6ff;
+
+}
+
+.therapy-item input:checked + .therapy-card .therapy-check{
+
+    background:#0f4c81;
+
+    border-color:#0f4c81;
+
+}
+
+.therapy-item input:checked + .therapy-card .therapy-check i{
+
+    display:block;
+
+}
+
+
+/* ==========================================================
+                    RESPONSIVE
+========================================================== */
+
+@media(max-width:900px){
+
+    .therapy-list{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

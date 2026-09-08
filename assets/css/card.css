@@ -1,0 +1,238 @@
+/* ===========================================
+        FEATURED HEALTH CARD
+=========================================== */
+
+.featured-card{
+
+    width:95%;
+
+    margin:auto;
+
+    background:white;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    align-items:center;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.08);
+
+    transition:.35s;
+    height: 450px;
+
+}
+
+.featured-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 30px 60px rgba(0,0,0,.15);
+
+}
+
+/* .featured-left{
+
+    
+    width:40%;
+
+    padding:35px;
+
+
+
+    background:linear-gradient(135deg,#eef6ff,#dfeeff);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:50px;
+
+} */
+.featured-left{
+
+    width:40%;
+
+    height:100%;
+
+    background-size:cover;
+
+    background-position:center;
+
+    background-repeat:no-repeat;
+
+    flex-shrink:0;
+
+}
+.featured-card:hover .featured-left{
+
+    transform:scale(1.02);
+
+}
+
+/* .featured-left img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+} */
+
+/* .featured-card:hover img{
+
+    transform:scale(1.06);
+
+} */
+
+.featured-right{
+
+    width:60%;
+
+    padding:30px;
+
+}
+
+.featured-badge{
+
+    background:#dbeafe;
+
+    color:#0d6efd;
+
+    padding:10px 22px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.featured-right h2{
+
+    margin-top:25px;
+
+    font-size:28px;
+
+    color:#163A6B;
+
+}
+
+.featured-right p{
+
+    margin-top:20px;
+
+    color:#667085;
+
+    line-height:32px;
+
+    font-size:17px;
+
+}
+
+.feature-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+    margin-top:35px;
+
+}
+
+.feature-chip{
+
+    background:#f3f8ff;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:stretch;
+
+    gap:12px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.feature-chip:hover{
+
+    background:#0d6efd;
+
+    color:white;
+
+}
+
+.feature-chip i{
+
+    color:#22c55e;
+
+}
+
+.feature-chip:hover i{
+
+    color:white;
+
+}
+
+.dashboard-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-top:40px;
+
+    padding:18px 35px;
+
+    border-radius:15px;
+
+    background:#0d6efd;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+.dashboard-btn:hover{
+
+    background:#084ec1;
+
+    transform:translateY(-4px);
+
+}
+.module-container{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:35px;
+
+    margin-top:40px;
+
+}

@@ -1,0 +1,483 @@
+/* ==========================================================
+                    MAIN CATEGORY GRID
+========================================================== */
+
+#medicalFirmMain{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+
+    gap:25px;
+
+}
+
+
+/* ==========================================================
+                    CATEGORY CARD
+========================================================== */
+
+.medical-category-card{
+
+    position:relative;
+
+    background:#ffffff;
+
+    border:1px solid #dbeafe;
+
+    border-radius:18px;
+
+    padding:28px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    min-height:260px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    
+
+}
+.medical-category-card{
+
+    border-top:6px solid var(--accent);
+
+}
+.medical-category-card:hover{
+
+    border-color:var(--accent);
+
+}
+
+.medical-category-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 18px 35px rgba(0,0,0,.08);
+
+    border-color:#0f4c81;
+
+}
+
+
+/* ==========================================================
+                    ICON
+========================================================== */
+
+.medical-category-icon{
+
+    width:82px;
+
+    height:82px;
+
+    border-radius:22px;
+
+    background:var(--accent);
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    margin-bottom:22px;
+
+}
+
+/* ==========================================================
+                    TITLE
+========================================================== */
+
+.medical-category-card h3{
+
+    color:#0f4c81;
+
+    font-size:22px;
+
+    margin-bottom:10px;
+
+}
+
+
+/* ==========================================================
+                    DESCRIPTION
+========================================================== */
+
+.medical-category-card p{
+
+    color:#64748b;
+
+    font-size:14px;
+
+    line-height:24px;
+
+    flex:1;
+
+}
+
+
+/* ==========================================================
+                    ARROW
+========================================================== */
+
+.medical-category-arrow{
+
+    position:absolute;
+
+    right:22px;
+
+    bottom:22px;
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    background:#0f4c81;
+
+    color:#ffffff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    transition:.3s;
+
+}
+
+.medical-category-card:hover .medical-category-arrow{
+
+    transform:translateX(6px);
+
+}
+
+
+/* ==========================================================
+                    DETAILS PAGE
+========================================================== */
+
+#medicalFirmDetails{
+
+    display:none;
+
+}
+
+
+/* ==========================================================
+                    TOP BAR
+========================================================== */
+
+.medical-top-bar{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    margin-bottom:30px;
+
+}
+
+.medical-top-bar h2{
+
+    color:#0f4c81;
+
+    margin-bottom:6px;
+
+}
+
+.medical-top-bar p{
+
+    color:#64748b;
+
+}
+
+
+/* ==========================================================
+                    SUBTYPE GRID
+========================================================== */
+
+#firmSubtypeList{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+
+    gap:20px;
+
+}
+
+
+/* ==========================================================
+                    SUBTYPE CARD
+========================================================== */
+
+.firm-subtype-card{
+
+    position:relative;
+
+    background:#ffffff;
+
+    border:1px solid #dbeafe;
+
+    border-radius:16px;
+
+    padding:26px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    min-height:120px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+}
+
+.firm-subtype-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 12px 28px rgba(0,0,0,.08);
+
+}
+
+.firm-subtype-card h4{
+
+    color:#0f4c81;
+
+    font-size:18px;
+
+    line-height:26px;
+
+}
+
+
+/* ==========================================================
+                    SELECTED CARD
+========================================================== */
+
+.firm-subtype-card.selected{
+
+    border:2px solid #16a34a;
+
+    background:#f0fff4;
+
+    box-shadow:0 14px 30px rgba(22,163,74,.15);
+
+}
+
+
+/* ==========================================================
+                    CHECK ICON
+========================================================== */
+
+.firm-check{
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    background:#16a34a;
+
+    color:#ffffff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    opacity:0;
+
+    transform:scale(.6);
+
+    transition:.25s;
+
+}
+
+.firm-subtype-card.selected .firm-check{
+
+    opacity:1;
+
+    transform:scale(1);
+
+}
+
+
+/* ==========================================================
+                    SELECTED BADGE
+========================================================== */
+
+.firm-subtype-card::after{
+
+    content:"Selected";
+
+    position:absolute;
+
+    bottom:16px;
+
+    right:16px;
+
+    background:#16a34a;
+
+    color:#ffffff;
+
+    padding:7px 14px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    opacity:0;
+
+    transform:translateY(8px);
+
+    transition:.25s;
+
+}
+
+.firm-subtype-card.selected::after{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
+
+
+/* ==========================================================
+                    BUTTON ROW
+========================================================== */
+
+.button-row{
+
+    margin-top:30px;
+
+}
+
+
+/* ==========================================================
+                    RESPONSIVE
+========================================================== */
+
+@media(max-width:900px){
+
+    #medicalFirmMain{
+
+        grid-template-columns:1fr;
+
+    }
+
+    #firmSubtypeList{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .medical-top-bar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+}
+/* ==========================================
+            SEARCH BOX
+========================================== */
+
+.medical-search{
+
+    position:relative;
+
+    margin-bottom:25px;
+
+}
+
+.medical-search i{
+
+    position:absolute;
+
+    left:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#64748b;
+
+    font-size:16px;
+
+    z-index:2;
+
+}
+
+.medical-search input{
+
+    width:100%;
+
+    height:54px;
+
+    padding:0 20px 0 50px;
+
+    border:1px solid #dbeafe;
+
+    border-radius:14px;
+
+    background:#ffffff;
+
+    font-size:15px;
+
+    color:#0f172a;
+
+    outline:none;
+
+    transition:.25s;
+
+}
+
+.medical-search input:focus{
+
+    border-color:#0f4c81;
+
+    box-shadow:0 0 0 4px rgba(15,76,129,.08);
+
+}
+
+.medical-search input::placeholder{
+
+    color:#94a3b8;
+
+}

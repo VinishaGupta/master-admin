@@ -1,0 +1,211 @@
+/* =====================================
+        ADVICE MODULE
+===================================== */
+
+.advice-info{
+
+    display:flex;
+
+    gap:20px;
+
+    background:#EEF6FF;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    margin-bottom:35px;
+
+}
+
+.advice-info i{
+
+    font-size:40px;
+
+    color:#0F5DA9;
+
+}
+
+.advice-info h4{
+
+    color:#0F5DA9;
+
+    margin-bottom:8px;
+
+}
+
+.advice-info p{
+
+    color:#64748B;
+
+    line-height:26px;
+
+}
+
+/* =====================================
+        LANGUAGE CARD
+===================================== */
+
+.advice-language-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    margin-bottom:30px;
+
+    border:1px solid #dbeafe;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+}
+
+.advice-language-card h3{
+
+    color:#0F5DA9;
+
+    margin-bottom:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+/* =====================================
+        HEADER
+===================================== */
+
+.language-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+/* =====================================
+        EDITOR
+===================================== */
+
+.advice-editor{
+
+    width:100%;
+
+    min-height:350px;
+
+    padding:25px;
+
+    border:2px solid #dbeafe;
+
+    border-radius:16px;
+
+    outline:none;
+
+    font-size:16px;
+
+    line-height:32px;
+
+    font-family:"Poppins",sans-serif;
+
+    overflow:auto;
+
+}
+
+.advice-editor:focus{
+
+    border-color:#0F5DA9;
+
+}
+
+.advice-editor h3{
+
+    color:#0F5DA9;
+
+    font-size:22px;
+
+    margin-top:20px;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+.advice-editor ul{
+
+    margin-left:25px;
+
+    margin-bottom:18px;
+
+}
+
+.advice-editor li{
+
+    margin-bottom:8px;
+
+    line-height:28px;
+
+}
+
+/* =====================================
+        PLACEHOLDER
+===================================== */
+
+.advice-editor:empty:before{
+
+    content:attr(data-placeholder);
+
+    color:#94a3b8;
+
+    white-space:pre-line;
+
+    pointer-events:none;
+
+}
+
+/* =====================================
+        BUTTON
+===================================== */
+
+.add-heading{
+
+    margin-top:18px;
+
+}
+
+/* =====================================
+        RESPONSIVE
+===================================== */
+
+@media(max-width:768px){
+
+    .language-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .advice-editor{
+
+        min-height:280px;
+
+        padding:18px;
+
+    }
+
+}

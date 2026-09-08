@@ -1,0 +1,323 @@
+/* ==========================================
+            LARGE LAPTOP
+========================================== */
+
+@media (max-width:1200px){
+
+    header{
+
+        padding:0 40px;
+
+    }
+
+    .hero{
+
+        padding:60px;
+
+    }
+
+    .hero-left h1{
+
+        font-size:48px;
+
+        line-height:62px;
+
+    }
+
+}
+
+
+
+/* ==========================================
+            LAPTOP
+========================================== */
+
+@media (max-width:992px){
+
+    header{
+
+        padding:0 30px;
+
+    }
+
+    .logo span{
+
+        font-size:20px;
+
+    }
+
+    .hero{
+
+        flex-direction:column-reverse;
+
+        text-align:center;
+
+        padding:50px;
+
+    }
+
+    .hero-left{
+
+        width:100%;
+
+    }
+
+    .hero-left p{
+
+        max-width:100%;
+
+    }
+
+    .hero-right{
+
+        width:100%;
+
+    }
+
+    .hero-right img{
+
+        max-width:450px;
+
+    }
+
+    .module-container{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+
+/* ==========================================
+            TABLET
+========================================== */
+
+@media (max-width:768px){
+
+    header{
+
+        height:auto;
+
+        padding:20px;
+
+        flex-direction:column;
+
+        gap:20px;
+
+    }
+
+    .logo{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .logo span{
+
+        font-size:18px;
+
+    }
+
+    .hero{
+
+        margin-top:30px;
+
+        padding:35px;
+
+    }
+
+    .hero-left h1{
+
+        font-size:38px;
+
+        line-height:50px;
+
+    }
+
+    .hero-left p{
+
+        font-size:16px;
+
+        line-height:30px;
+
+    }
+
+    .hero-left button{
+
+        width:100%;
+
+    }
+
+    .module-title h2{
+
+        font-size:34px;
+
+    }
+
+    .module-title p{
+
+        font-size:16px;
+
+    }
+
+    .features{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+
+/* ==========================================
+            MOBILE
+========================================== */
+
+@media (max-width:576px){
+
+    .hero{
+
+        padding:25px;
+
+        border-radius:20px;
+
+    }
+
+    .badge{
+
+        font-size:12px;
+
+        padding:8px 18px;
+
+    }
+
+    .hero-left h1{
+
+        font-size:30px;
+
+        line-height:42px;
+
+    }
+
+    .hero-left p{
+
+        font-size:15px;
+
+        line-height:28px;
+
+    }
+
+    .hero-left button{
+
+        padding:15px 25px;
+
+        font-size:15px;
+
+    }
+
+    .profile{
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+    .module-title{
+
+        margin-top:50px;
+
+    }
+
+    .module-title h2{
+
+        font-size:28px;
+
+    }
+
+    .feature{
+
+        padding:30px;
+
+    }
+
+}
+@media(max-width:992px){
+
+.featured-card{
+
+    flex-direction:column;
+
+}
+
+.featured-left{
+
+    width:100%;
+
+}
+
+.featured-right{
+
+    width:100%;
+
+}
+
+.feature-list{
+
+    grid-template-columns:1fr;
+
+}
+
+}
+@media(max-width:992px){
+
+.stats{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:576px){
+
+.stats{
+
+grid-template-columns:1fr;
+
+}
+
+}
+@media(max-width:992px){
+
+.coming-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:576px){
+
+.coming-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+@media(max-width:992px){
+
+    .module-container{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

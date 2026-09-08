@@ -1,0 +1,288 @@
+.facility-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+
+gap:25px;
+
+}
+
+.facility-card{
+
+background:#fff;
+
+border-radius:18px;
+
+overflow:hidden;
+
+border:1px solid #dbeafe;
+
+transition:.3s;
+
+}
+
+.facility-card:hover{
+
+transform:translateY(-5px);
+
+box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+.facility-image{
+
+width:100%;
+
+height:180px;
+
+object-fit:cover;
+
+display:block;
+
+}
+
+.facility-content{
+
+padding:18px;
+
+}
+
+.facility-content h3{
+
+margin-bottom:10px;
+
+color:#0f4c81;
+
+}
+
+.facility-content p{
+
+font-size:14px;
+
+line-height:22px;
+
+color:#64748b;
+
+margin-bottom:18px;
+
+}
+
+.facility-content select{
+
+width:100%;
+
+padding:12px;
+
+border-radius:10px;
+
+border:1px solid #dbeafe;
+
+}
+/* ===========================================
+            STATUS BUTTONS
+=========================================== */
+
+.facility-status{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:18px;
+
+}
+
+.status-btn{
+
+    flex:1;
+
+    padding:12px;
+
+    border:2px solid #dbeafe;
+
+    background:#ffffff;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.status-btn i{
+
+    font-size:15px;
+
+}
+
+.status-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+
+}
+
+/* ===========================================
+            AVAILABLE
+=========================================== */
+
+.status-btn.active[data-status="available"]{
+
+    background:#16a34a;
+
+    border-color:#16a34a;
+
+    color:#ffffff;
+
+}
+
+/* ===========================================
+            NOT AVAILABLE
+=========================================== */
+
+.status-btn.active[data-status="unavailable"]{
+
+    background:#dc2626;
+
+    border-color:#dc2626;
+
+    color:#ffffff;
+
+}
+.facility-card{
+
+    position:relative;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.facility-card.selected{
+
+    border:2px solid #16a34a;
+
+    box-shadow:0 12px 30px rgba(22,163,74,.18);
+
+    transform:translateY(-4px);
+
+}
+
+.facility-tick{
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    background:#16a34a;
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    opacity:0;
+
+    transform:scale(.6);
+
+    transition:.25s;
+
+}
+
+.facility-card.selected .facility-tick{
+
+    opacity:1;
+
+    transform:scale(1);
+
+}
+/* ==========================================
+        AVAILABLE BADGE
+========================================== */
+
+/* ==========================================
+        AVAILABLE BADGE
+========================================== */
+
+.facility-card{
+
+    position:relative;
+
+}
+
+.facility-available{
+
+    position:absolute;
+
+    bottom:16px;
+
+    right:16px;
+
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    padding:7px 14px;
+
+    border-radius:20px;
+
+    background:#16a34a;
+
+    color:#ffffff;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:translateY(8px);
+
+    transition:.25s;
+
+}
+
+.facility-card.selected .facility-available{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:translateY(0);
+
+}
+
+.facility-available i{
+
+    font-size:12px;
+
+}

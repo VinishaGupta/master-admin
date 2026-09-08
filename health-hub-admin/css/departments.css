@@ -1,0 +1,798 @@
+/* =====================================================
+        DEPARTMENT SECTION
+===================================================== */
+
+
+.department-search{
+
+margin-bottom:30px;
+
+}
+
+
+
+.department-search input{
+
+width:100%;
+
+padding:16px 20px;
+
+border-radius:14px;
+
+border:1px solid #dbe7f3;
+
+font-size:15px;
+
+outline:none;
+
+}
+
+
+
+.department-search input:focus{
+
+border-color:#0F5DA9;
+
+}
+
+
+
+/* GRID */
+
+
+.department-grid{
+
+
+display:grid;
+
+grid-template-columns:
+
+repeat(auto-fit,minmax(240px,1fr));
+
+
+gap:25px;
+
+
+}
+
+
+
+
+/* CARD */
+
+
+.department-card{
+
+
+background:white;
+
+border-radius:20px;
+
+padding:25px;
+
+border:1px solid #e5edf7;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+cursor:pointer;
+
+transition:.3s;
+
+
+position:relative;
+
+
+}
+
+
+
+.department-card:hover{
+
+
+transform:translateY(-6px);
+
+
+}
+
+
+
+
+.department-card input{
+
+
+display:none;
+
+
+}
+
+
+
+.department-label{
+
+
+display:block;
+
+cursor:pointer;
+
+
+}
+
+
+
+
+.department-icon{
+
+
+width:65px;
+
+height:65px;
+
+border-radius:18px;
+
+background:#eaf4ff;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:28px;
+
+color:#0F5DA9;
+
+margin-bottom:18px;
+
+
+}
+
+
+
+.department-card h3{
+
+
+color:#0F5DA9;
+
+margin-bottom:8px;
+
+
+}
+
+
+
+.department-card p{
+
+
+color:#64748b;
+
+font-size:14px;
+
+
+}
+
+
+
+
+/* SELECTED */
+
+
+.department-card:has(input:checked){
+
+
+border:2px solid #0F5DA9;
+
+background:#f0f7ff;
+
+
+}
+
+
+
+.department-card:has(input:checked)
+.department-icon{
+
+
+background:#0F5DA9;
+
+color:white;
+
+
+}
+
+
+
+
+/* COUNT */
+
+
+.selected-info{
+
+
+margin-top:30px;
+
+padding:15px;
+
+background:#f8fbff;
+
+border-radius:15px;
+
+font-weight:600;
+
+
+}
+
+
+
+#departmentCount{
+
+
+color:#0F5DA9;
+
+
+}
+
+
+
+
+
+@media(max-width:700px){
+
+
+.department-grid{
+
+
+grid-template-columns:1fr;
+
+
+}
+
+
+}
+/* ==========================================
+        DEPARTMENT TOOLBAR
+========================================== */
+
+
+.department-toolbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.department-toolbar input{
+
+    flex:1;
+
+    padding:15px 18px;
+
+    border-radius:14px;
+
+    border:1px solid #dde7f2;
+
+    outline:none;
+
+    font-size:15px;
+
+}
+
+
+
+.department-toolbar input:focus{
+
+    border-color:#0F5DA9;
+
+}
+
+
+
+/* ==========================================
+        SELECTED COUNT
+========================================== */
+
+
+.selected-count{
+
+    background:#EAF4FF;
+
+    color:#0F5DA9;
+
+    padding:12px 22px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    white-space:nowrap;
+
+}
+
+
+.selected-count span{
+
+    font-size:20px;
+
+}
+
+
+
+@media(max-width:768px){
+
+    .department-toolbar{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+}
+.department-card{
+
+    position:relative;
+
+}
+
+
+.department-label{
+
+    position:relative;
+
+    display:block;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    cursor:pointer;
+
+    border:2px solid #edf2f7;
+
+    transition:.3s;
+
+}
+
+
+.department-label:hover{
+
+    transform:translateY(-5px);
+
+}
+
+
+
+.department-tick{
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    width:35px;
+
+    height:35px;
+
+    border-radius:50%;
+
+    background:#22c55e;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    opacity:0;
+
+    transform:scale(.5);
+
+    transition:.3s;
+
+}
+
+
+
+.department-card.selected .department-tick{
+
+
+    opacity:1;
+
+    transform:scale(1);
+
+
+}
+
+
+
+.department-card.selected .department-label{
+
+
+    border-color:#22c55e;
+
+    background:#f0fff5;
+
+
+}
+/* ==========================================================
+        DEPARTMENT IMAGE
+========================================================== */
+
+.department-image{
+
+    width:100%;
+
+    height:170px;
+
+    overflow:hidden;
+
+    border-radius:14px;
+
+    margin-bottom:15px;
+
+}
+
+.department-image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+    transition:.35s;
+
+}
+
+.department-card:hover .department-image img{
+
+    transform:scale(1.05);
+
+}
+/* ==========================================================
+        DESCRIPTION BOX
+========================================================== */
+
+.department-description-box{
+
+    margin-top:18px;
+
+    padding:12px;
+
+    border:2px dashed #d8d8d8;
+
+    border-radius:12px;
+
+    background:#fafafa;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.department-description-box:hover{
+
+    border-color:#0ea5e9;
+
+    background:#f0f9ff;
+
+}
+.description-text{
+
+    display:-webkit-box;
+
+    -webkit-line-clamp:2;
+
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    font-size:14px;
+
+    color:#555;
+
+    line-height:1.5;
+
+    min-height:42px;
+
+}
+/* ==========================================================
+        SAVE DESCRIPTION BUTTON
+========================================================== */
+
+.save-description-btn{
+
+    width:100%;
+
+    margin-top:15px;
+
+    padding:10px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#0ea5e9;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.save-description-btn:hover{
+
+    background:#0284c7;
+
+}
+/* ==========================================================
+        DESCRIPTION MODAL
+========================================================== */
+
+#departmentDescriptionModal{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+#departmentDescriptionModal.active{
+
+    display:flex;
+
+}
+
+#departmentDescriptionModal textarea{
+
+    width:100%;
+
+    min-height:220px;
+
+    resize:none;
+
+    padding:15px;
+
+    border:1px solid #dcdcdc;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    line-height:1.6;
+
+    outline:none;
+
+    box-sizing:border-box;
+
+}
+
+#departmentDescriptionModal textarea:focus{
+
+    border-color:#0ea5e9;
+
+}
+/* ==========================================================
+        SELECTED CARD
+========================================================== */
+
+.department-card.selected{
+
+    border:2px solid #10b981;
+
+    box-shadow:0 10px 30px rgba(16,185,129,.25);
+
+}
+.department-tick{
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    background:#10b981;
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    opacity:0;
+
+    transform:scale(.8);
+
+    transition:.3s;
+
+}
+
+.department-card.selected .department-tick{
+
+    opacity:1;
+
+    transform:scale(1);
+
+}
+.department-card{
+
+    position:relative;
+
+    transition:.3s;
+
+}
+
+.department-card:hover{
+
+    transform:translateY(-5px);
+
+}
+/* ==========================================================
+        DEPARTMENT DESCRIPTION MODAL
+========================================================== */
+
+.department-description-modal{
+
+    width:650px;
+
+    max-width:95%;
+
+    background:#ffffff;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 25px 60px rgba(0,0,0,.25);
+
+    animation:popup .25s ease;
+
+}
+
+.department-modal-header{
+
+    padding:22px 28px;
+
+    background:#0ea5e9;
+
+    color:#fff;
+
+}
+
+.department-modal-header h2{
+
+    margin:0;
+
+    font-size:24px;
+
+}
+
+.department-modal-header p{
+
+    margin-top:6px;
+
+    opacity:.9;
+
+    font-size:15px;
+
+}
+
+.department-modal-body{
+
+    padding:28px;
+
+}
+
+.department-modal-body label{
+
+    display:block;
+
+    font-weight:600;
+
+    margin-bottom:12px;
+
+    color:#374151;
+
+}
+
+.department-modal-body textarea{
+
+    width:100%;
+
+    height:220px;
+
+    resize:none;
+
+    padding:18px;
+
+    font-size:15px;
+
+    line-height:1.8;
+
+    border:1px solid #d7d7d7;
+
+    border-radius:14px;
+
+    outline:none;
+
+    transition:.25s;
+
+    box-sizing:border-box;
+
+}
+
+.department-modal-body textarea:focus{
+
+    border-color:#0ea5e9;
+
+    box-shadow:0 0 0 3px rgba(14,165,233,.15);
+
+}
+
+.department-character-count{
+
+    margin-top:10px;
+
+    text-align:right;
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+.department-modal-footer{
+
+    padding:22px 28px;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    border-top:1px solid #ececec;
+
+    background:#fafafa;
+
+}
