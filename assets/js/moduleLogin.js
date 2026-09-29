@@ -3,17 +3,6 @@
 
         BACKEND INTEGRATION NOTE:
         ------------------------------------------------------
-        This login is currently using temporary frontend
-        credentials for development/testing only.
-
-        TEMPORARY CREDENTIALS:
-        Username: admin
-        Password: 1234
-
-        IMPORTANT:
-        Backend developer must replace the temporary
-        credential check with the actual authentication API.
-
         Expected backend responsibilities:
         - Verify username/password
         - Authenticate the user
@@ -34,6 +23,19 @@
 ========================================================== */
 
 let currentLoginModule = null;
+const loginInstanceId = typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : String(Date.now()) + Math.random();
+
+// Resolve the API from this script's URL so the request still targets the
+// project-level API when the application is opened from a nested route.
+const profileLoginApiUrl = new URL(
+    "../../api/profile-login.php",
+    document.currentScript?.src || window.location.href
+).href;
+
+sessionStorage.setItem("healthHubLoginInstanceId", loginInstanceId);
 
 
 /* ==========================================================
@@ -57,20 +59,6 @@ healthHub: {
 
     subtitle:
         "Login to access the Health Hub Administration Portal.",
-
-    /*
-     * TEMPORARY FRONTEND CREDENTIALS
-     * --------------------------------
-     * For development/testing only.
-     *
-     * BACKEND:
-     * Replace this credential check with the
-     * actual login API and database authentication.
-     */
-
-    username: "admin",
-
-    password: "1234",
 
     /*
      * BACKEND:
@@ -190,7 +178,7 @@ function closeModuleLogin(){
                 SUBMIT LOGIN
 ========================================================== */
 
-function submitModuleLogin(){
+async function submitModuleLogin(){
 
     if(!currentLoginModule){
 
@@ -215,37 +203,25 @@ function submitModuleLogin(){
         ).value;
 
 
-    /* ==========================
-            VALIDATION
-    ========================== */
-/* ==========================================================
-        TEMPORARY LOGIN VALIDATION
-        ------------------------------------------------------
-        DEVELOPMENT ONLY.
+    const loginButton = document.getElementById(
+        "moduleLoginButton"
+    );
 
-        BACKEND DEVELOPER:
-        Replace this block with an API request such as:
+    loginButton.disabled = true;
 
-        POST /api/auth/login
+    loginButton.innerHTML = `
+        <span>Checking...</span>
+        <i class="fa-solid fa-spinner fa-spin"></i>
+    `;
 
-        The backend should verify the credentials and
-        establish an authenticated session/token.
+    const loginResult = await authenticateApprovedUser(
+        username,
+        password
+    );
 
-        Do NOT keep username/password validation
-        inside frontend JavaScript for production.
-========================================================== */
-    if(
-        username === config.username &&
-        password === config.password
-    ){
+    if(loginResult.success){
 
         hideLoginError();
-
-
-        const loginButton =
-            document.getElementById(
-                "moduleLoginButton"
-            );
 
 
         loginButton.innerHTML = `
@@ -257,7 +233,25 @@ function submitModuleLogin(){
         `;
 
 
-        loginButton.disabled = true;
+        sessionStorage.setItem(
+            "healthHubLoginUsername",
+            loginResult.user.username
+        );
+
+        sessionStorage.setItem(
+            "healthHubLoginEmail",
+            loginResult.user.personal_email || ""
+        );
+
+        sessionStorage.setItem(
+            "healthHubLoginPassword",
+            loginResult.user.password || password
+        );
+
+        sessionStorage.setItem(
+            "healthHubLoginProfile",
+            JSON.stringify(loginResult.user)
+        );
 
 
         /* ==========================
@@ -276,7 +270,75 @@ function submitModuleLogin(){
 
     else{
 
-        showLoginError();
+        showLoginError(loginResult.message);
+
+        loginButton.disabled = false;
+
+        loginButton.innerHTML = "Login";
+
+    }
+
+}
+
+async function authenticateApprovedUser(username,password){
+
+    try{
+
+        const response = await fetch(
+            profileLoginApiUrl,
+            {
+                method:"POST",
+                credentials:"include",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    username:username,
+                    password:password,
+                    loginInstanceId:loginInstanceId
+                })
+            }
+        );
+
+        const responseBody = await response.text();
+        let result;
+
+        try {
+            result = JSON.parse(responseBody);
+        } catch (error) {
+            console.error("Login API returned a non-JSON response:", responseBody);
+            return {
+                success: false,
+                message: response.status === 404
+                    ? "Login endpoint was not found."
+                    : "The profile service returned an invalid response."
+            };
+        }
+
+        if(!response.ok || !result.success || !result.user){
+
+            return{
+                success:false,
+                message:result.message || "Approved account not found."
+            };
+
+        }
+
+        return{
+            success:true,
+            user:result.user
+        };
+
+    }
+
+    catch(error){
+
+        console.error("Login API Error:",error);
+
+        return{
+            success:false,
+            message:"Unable to connect to the profile service."
+        };
 
     }
 
@@ -287,7 +349,7 @@ function submitModuleLogin(){
                 SHOW ERROR
 ========================================================== */
 
-function showLoginError(){
+function showLoginError(message){
 
     const error =
         document.getElementById(
@@ -296,6 +358,14 @@ function showLoginError(){
 
 
     error.classList.add("show");
+
+    const messageElement = error.querySelector("span");
+
+    if(messageElement && message){
+
+        messageElement.textContent = message;
+
+    }
 
 
     const password =
@@ -324,6 +394,14 @@ function hideLoginError(){
 
 
     if(error){
+
+        const messageElement = error.querySelector("span");
+
+        if(messageElement){
+
+            messageElement.textContent = "Invalid username or password.";
+
+        }
 
         error.classList.remove("show");
 

@@ -472,3 +472,699 @@
     object-fit: contain;    /* Image fits without stretching */
     display: block;
 }
+
+/* ==========================================================
+                    AWARD MODAL
+========================================================== */
+
+.award-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.65);
+
+    backdrop-filter: blur(4px);
+
+}
+
+
+.award-modal.active {
+
+    display: flex;
+
+}
+
+
+/* ==========================================================
+                    MODAL CONTENT
+========================================================== */
+
+.award-modal-content {
+
+    width: min(760px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.25);
+
+}
+
+
+/* ==========================================================
+                    MODAL HEADER
+========================================================== */
+
+.modal-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 28px;
+
+}
+
+
+.modal-header h2 {
+
+    margin: 0;
+
+    color: #0f4c81;
+
+    font-size: 25px;
+
+    font-weight: 700;
+
+}
+
+
+.modal-subtitle {
+
+    margin: 7px 0 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+}
+
+
+.modal-header > button {
+
+    width: 38px;
+
+    height: 38px;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: 0.2s ease;
+
+}
+
+
+.modal-header > button:hover {
+
+    background: #e2e8f0;
+
+    color: #0f4c81;
+
+}
+
+
+/* ==========================================================
+                    FORM GRID
+========================================================== */
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 22px 24px;
+
+}
+
+
+/* ==========================================================
+                    INPUT GROUP
+========================================================== */
+
+.input-group {
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.input-group label {
+
+    margin-bottom: 8px;
+
+    color: #0f172a;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+}
+
+
+.required {
+
+    color: #dc2626;
+
+    margin-left: 3px;
+
+}
+
+
+.optional {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    margin-left: 7px;
+
+    padding: 3px 8px;
+
+    border-radius: 20px;
+
+    background: #eef6ff;
+
+    color: #0f4c81;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+/* ==========================================================
+                    INPUTS
+========================================================== */
+
+.input-group input[type="text"],
+.input-group input[type="date"],
+.input-group input[type="file"],
+.input-group textarea {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #dbe5f1;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #0f172a;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    transition: 0.2s ease;
+
+}
+
+
+.input-group input[type="text"],
+.input-group input[type="date"] {
+
+    height: 52px;
+
+    padding: 0 16px;
+
+}
+
+
+.input-group input[type="file"] {
+
+    min-height: 52px;
+
+    padding: 14px;
+
+    cursor: pointer;
+
+}
+
+
+.input-group textarea {
+
+    min-height: 130px;
+
+    resize: vertical;
+
+    padding: 14px 16px;
+
+    line-height: 1.5;
+
+}
+
+
+.input-group input:focus,
+.input-group textarea:focus {
+
+    outline: none;
+
+    border-color: #0f66b3;
+
+    box-shadow:
+        0 0 0 3px rgba(15, 102, 179, 0.10);
+
+}
+
+
+/* ==========================================================
+                    IMAGE HELP
+========================================================== */
+
+.input-help {
+
+    margin-top: 6px;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+}
+
+
+/* ==========================================================
+                    IMAGE PREVIEW
+========================================================== */
+
+.award-preview {
+
+    width: 100%;
+
+    min-height: 180px;
+
+    margin: 24px 0;
+
+    border: 2px dashed #d5deea;
+
+    border-radius: 14px;
+
+    background: #f8fafc;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.preview-placeholder {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    color: #94a3b8;
+
+    padding: 30px;
+
+    text-align: center;
+
+}
+
+
+.preview-placeholder i {
+
+    font-size: 38px;
+
+}
+
+
+.preview-placeholder span {
+
+    font-size: 13px;
+
+}
+
+
+#previewImage {
+
+    display: none;
+
+    width: 100%;
+
+    max-height: 300px;
+
+    object-fit: contain;
+
+}
+
+
+/* ==========================================================
+                    DESCRIPTION
+========================================================== */
+
+.description-group {
+
+    margin-top: 4px;
+
+}
+
+
+.character-counter {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 5px;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+}
+
+
+/* ==========================================================
+                    BUTTON ROW
+========================================================== */
+
+.award-modal .button-row {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 24px;
+
+}
+
+
+/* ==========================================================
+                    SECONDARY BUTTON
+========================================================== */
+
+.award-modal .secondary-btn {
+
+    min-width: 110px;
+
+    height: 44px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #eef4fb;
+
+    color: #0f4c81;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+
+.award-modal .secondary-btn:hover {
+
+    background: #dce9f7;
+
+}
+
+
+/* ==========================================================
+                    PRIMARY BUTTON
+========================================================== */
+
+.award-modal .primary-btn {
+
+    min-width: 140px;
+
+    height: 44px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #0f66b3;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+
+.award-modal .primary-btn:hover {
+
+    background: #0b5799;
+
+}
+
+
+/* ==========================================================
+                    DELETE MODAL
+========================================================== */
+
+.delete-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 10000;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.65);
+
+}
+
+
+.delete-modal.active {
+
+    display: flex;
+
+}
+
+
+.delete-box {
+
+    width: min(400px, 100%);
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    text-align: center;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.25);
+
+}
+
+
+.delete-icon {
+
+    width: 60px;
+
+    height: 60px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 24px;
+
+}
+
+
+.delete-box h3 {
+
+    margin: 0 0 8px;
+
+    color: #0f172a;
+
+}
+
+
+.delete-box p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+}
+
+
+.delete-box .button-row {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 24px;
+
+}
+
+
+.danger-btn {
+
+    min-width: 100px;
+
+    height: 44px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #dc2626;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.danger-btn:hover {
+
+    background: #b91c1c;
+
+}
+
+
+/* ==========================================================
+                    RESPONSIVE
+========================================================== */
+
+@media (max-width: 700px) {
+
+    .award-modal {
+
+        padding: 10px;
+
+        align-items: flex-start;
+
+    }
+
+
+    .award-modal-content {
+
+        max-height: 95vh;
+
+        padding: 20px;
+
+        border-radius: 14px;
+
+    }
+
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+    }
+
+
+    .modal-header h2 {
+
+        font-size: 21px;
+
+    }
+
+
+    .award-modal .button-row {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .award-modal .button-row button {
+
+        width: 100%;
+
+    }
+
+}

@@ -1,287 +1,123 @@
 /* ==========================================================
-                ELEMENTS
+                ELEMENTS & CONFIGURATION
 ========================================================== */
 
 const moduleButtons = document.querySelectorAll(".module-btn");
-
 const contentArea = document.querySelector(".content-area");
 
+/**
+ * Registry mapping section names to initialization callbacks.
+ */
+const sectionInitializers = {
+    "registration": () => {
+        if (typeof initializeRegistration === "function") initializeRegistration();
+        if (typeof loadLoggedInUser === "function") loadLoggedInUser();
+    },
+    "medical-system": () => {
+        if (typeof initializeMedicalSystem === "function") initializeMedicalSystem();
+    },
+    "controlled-by": () => {
+        if (typeof initializeControlledBy === "function") initializeControlledBy();
+    },
+    "services": () => {
+        if (typeof initializeServices === "function") initializeServices();
+    },
+    "therapies": () => {
+        if (typeof initializeTherapies === "function") initializeTherapies();
+    },
+    "insurance": () => {
+        if (typeof initializeInsurance === "function") initializeInsurance();
+    },
+    "facilities": () => {
+        if (typeof initializeFacilities === "function") initializeFacilities();
+    },
+    "medical-firm-type": () => {
+        if (typeof initializeMedicalFirmType === "function") initializeMedicalFirmType();
+    },
+    "hospital-language": () => {
+        if (typeof initializeHospitalLanguage === "function") initializeHospitalLanguage();
+    },
+    "instructions": () => {
+        if (typeof initializeInstructions === "function") initializeInstructions();
+    },
+    "advice": () => {
+        if (typeof initializeAdvice === "function") initializeAdvice();
+    },
+    "departments": () => {
+        if (typeof initializeDepartments === "function") initializeDepartments();
+    },
+    "hospital-photos": () => {
+        if (typeof initializeHospitalPhotos === "function") initializeHospitalPhotos();
+    },
+    "awarded-by": () => {
+        if (typeof initializeAwardedBy === "function") initializeAwardedBy();
+    },
+    "emergency": () => {
+        if (typeof initializeEmergency === "function") initializeEmergency();
+    }
+};
+
 /* ==========================================================
-                LOAD SECTION
+                LOAD SECTION FUNCTION
 ========================================================== */
 
-function loadSection(section){
+async function loadSection(section) {
+    if (!contentArea) return;
 
-    fetch("sections/" + section + ".php")
-
-    .then(response => response.text())
-
-.then(html =>{
-
-    contentArea.innerHTML = html;
-
-    // Registration Page
-    if(section === "registration"){
-
-        if(typeof initializeRegistration === "function"){
-
-            initializeRegistration();
-
-        }
-
-        if(typeof loadLoggedInUser === "function"){
-
-            loadLoggedInUser();
-
-        }
+    try {
+        const response = await fetch(`sections/${section}.php`);
         
-
-    }
-
-    // Medical System Page
-    else if(section === "medical-system"){
-
-        if(typeof initializeMedicalSystem === "function"){
-
-            initializeMedicalSystem();
-
+        if (!response.ok) {
+            throw new Error(`Failed to load module: ${response.statusText}`);
         }
 
-    }
-    if(section === "controlled-by"){
+        const html = await response.text();
+        contentArea.innerHTML = html;
 
-        if(typeof initializeControlledBy === "function"){
-
-            initializeControlledBy();
-
+        // Run section-specific initializer
+        if (sectionInitializers[section]) {
+            sectionInitializers[section]();
         }
 
-    }
-    else if(section === "services"){
-
-    initializeServices();
-
-    }
-    else if(section==="therapies"){
-
-        initializeTherapies();
-
-    }
-    else if(section==="insurance"){
-
-        initializeInsurance();
-
-    }
-
-
-else if(section === "facilities"){
-
-    if(typeof initializeFacilities === "function"){
-
-        initializeFacilities();
-
-    }
-
-}
-if(section === "medical-firm-type"){
-
-    if(typeof initializeMedicalFirmType === "function"){
-
-        initializeMedicalFirmType();
-
-    }
-
-}
-else if(section === "hospital-language"){
-
-    if(typeof initializeHospitalLanguage === "function"){
-
-        initializeHospitalLanguage();
-
-    }
-
-}
-else if(section==="instructions"){
-
-    if(typeof initializeInstructions==="function"){
-
-        initializeInstructions();
-
-    }
-
-}
-
-else if(section==="advice"){
-
-    if(typeof initializeAdvice==="function"){
-
-        initializeAdvice();
-
-    }
-
-}
-else if(section==="departments"){
-
-
-if(typeof initializeDepartments==="function"){
-
-
-initializeDepartments();
-
-
-}
-
-
-}
-else if(section==="hospital-photos"){
-
-    if(typeof initializeHospitalPhotos==="function"){
-
-        initializeHospitalPhotos();
-
-    }
-
-}
-else if(section === "awarded-by"){
-
-    if(typeof initializeAwardedBy === "function"){
-
-        initializeAwardedBy();
-
-    }
-
-}
-else if(section === "emergency"){
-
-    if(typeof initializeEmergency === "function"){
-
-        initializeEmergency();
-
-    }
-
-}
-
-
-})
-
-    .catch(error =>{
-
+    } catch (error) {
         contentArea.innerHTML = `
-
             <div class="section-card">
-
                 <h2>Unable to load module.</h2>
-
             </div>
-
         `;
-
-        console.error(error);
-
-    });
-
+        console.error(`Error loading section '${section}':`, error);
+    }
 }
 
 /* ==========================================================
-                DEFAULT PAGE
+                EVENT LISTENERS & INIT
 ========================================================== */
 
-loadSection("registration");
-
-/* ==========================================================
-                BUTTON EVENTS
-========================================================== */
-
-moduleButtons.forEach(button=>{
-
-    button.addEventListener("click",()=>{
-
+// 1. Module Buttons Listener
+moduleButtons.forEach(button => {
+    button.addEventListener("click", () => {
         const section = button.dataset.section;
+        if (!section) return;
 
-        if(!section){
-
-            return;
-
-        }
-
-        moduleButtons.forEach(btn=>btn.classList.remove("active"));
-
+        moduleButtons.forEach(btn => btn.classList.remove("active"));
         button.classList.add("active");
 
         loadSection(section);
-
     });
-
 });
-/* ===========================================
-        BASIC INFORMATION MENU
-=========================================== */
 
-// const basicToggle = document.getElementById(
-
-//     "basicToggle"
-
-// );
-
-// const basicMenu = document.getElementById(
-
-//     "basicMenu"
-
-// );
-
-// const basicArrow = document.getElementById(
-
-//     "basicArrow"
-
-// );
-
-// basicToggle.addEventListener(
-
-//     "click",
-
-//     ()=>{
-
-//         basicMenu.classList.toggle(
-
-//             "open"
-
-//         );
-
-//         basicArrow.classList.toggle(
-
-//             "rotate"
-
-//         );
-
-//     }
-
-// );
-/* ===========================================
-        BASIC INFORMATION MENU
-=========================================== */
-
+// 2. Dropdown Menu Toggle
 const basicToggle = document.getElementById("basicToggle");
-
-if(basicToggle){
-
+if (basicToggle) {
     const basicMenu = document.getElementById("basicMenu");
-
     const basicArrow = document.getElementById("basicArrow");
 
-    basicToggle.addEventListener(
-
-        "click",
-
-        ()=>{
-
-            basicMenu.classList.toggle("open");
-
-            basicArrow.classList.toggle("rotate");
-
-            basicToggle.classList.toggle("dropdown-open");
-
-        }
-
-    );
-
+    basicToggle.addEventListener("click", () => {
+        if (basicMenu) basicMenu.classList.toggle("open");
+        if (basicArrow) basicArrow.classList.toggle("rotate");
+        basicToggle.classList.toggle("dropdown-open");
+    });
 }
+
+// 3. Default Page Load
+loadSection("registration");

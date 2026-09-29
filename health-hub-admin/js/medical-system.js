@@ -31,7 +31,7 @@ async function loadMedicalSystems() {
     try {
 
         const response = await fetch(
-            "http://localhost:8000/Hospital-Admin_Backend/api/medical-system/get.php"
+            "https://livtara.in/multiadmin/Hospital-Admin_Backend/api/medical-system/get.php"
         );
 
         if (!response.ok) {
@@ -278,7 +278,7 @@ function getSelectedMedicalSystems() {
 
 document.addEventListener(
     "click",
-    function (event) {
+    async function (event) {
 
         const button =
             event.target.closest(
@@ -293,15 +293,98 @@ document.addEventListener(
         }
 
 
-        const selected =
-            getSelectedMedicalSystems();
+        const payload = [];
+
+document
+    .querySelectorAll(
+        ".medical-card input"
+    )
+    .forEach(item => {
+
+        const id =
+            Number(item.value);
+
+        const system =
+            medicalSystems.find(
+                system =>
+                    Number(system.id) === id
+            );
+
+        if (!system) {
+            return;
+        }
+
+        payload.push({
+
+            medical_system_id:
+                id,
+
+            medical_system_name:
+                system.name || "",
+
+            selected:
+                item.checked ? 1 : 0
+
+        });
+
+    });
+
+try {
+
+    const response = await fetch(
+        "https://superadmin.livtara.in/master/health-hub-admin/api/medical-systems/save.php",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                medical_systems: payload
+            })
+        }
+    );
 
 
-        console.log(
-            "Selected Medical Systems:",
-            selected
+    const result =
+        await response.json();
+
+
+    console.log(
+        "Medical System Save Result:",
+        result
+    );
+
+
+    if (result.status === "success") {
+
+        showMedicalSystemSuccess();
+
+    }
+    else {
+
+        alert(
+            result.message ||
+            "Failed to save medical systems."
         );
 
+    }
+
+
+}
+catch (error) {
+
+    console.error(
+        "Medical System Save Error:",
+        error
+    );
+
+    alert(
+        "Failed to save medical systems."
+    );
+
+}
 
         /*
         ======================================================
@@ -328,7 +411,7 @@ document.addEventListener(
         */
 
 
-        showMedicalSystemSuccess();
+        // showMedicalSystemSuccess();
 
     }
 );

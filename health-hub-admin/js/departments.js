@@ -108,7 +108,7 @@ async function loadDepartments() {
     try {
 
         const response = await fetch(
-            "http://localhost:8000/Hospital-Admin_Backend/api/department/get.php"
+            "https://livtara.in/multiadmin/Hospital-Admin_Backend/api/department/get.php"
         );
 
         if (!response.ok) {
@@ -181,7 +181,7 @@ const grid =
        <img
     src="${
         dep.image
-            ? `http://localhost:8000/Hospital-Admin_Backend/uploads/departments/${dep.image}`
+            ? `https://livtara.in/multiadmin/Hospital-Admin_Backend/uploads/departments/${dep.image}`
             : "assets/images/no-image.png"
     }"
     alt="${dep.name}">
@@ -621,7 +621,7 @@ document.addEventListener(
 
 document.addEventListener(
     "click",
-    function(event){
+    async function(event){
 
         const button =
         event.target.closest(
@@ -643,20 +643,23 @@ document.addEventListener(
             const id =
             Number(item.value);
 
-            const dep =
+           const dep =
             departments.find(
-                d=>d.id===id
+                d => Number(d.id) === id
             );
 
             payload.push({
 
-                department_id:id,
+                department_id: id,
+
+                department_name:
+                    dep.name || "",
 
                 selected:
-                item.checked ? 1 : 0,
+                    item.checked ? 1 : 0,
 
                 description:
-                dep.description || ""
+                    dep.description || ""
 
             });
 
@@ -668,26 +671,51 @@ document.addEventListener(
 
         console.table(payload);
 
-        /*
-        ===================================================
+        try {
 
-        BACKEND
+        const response = await fetch(
+            "https://superadmin.livtara.in/master/health-hub-admin/api/departments/save.php",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    departments: payload
+                })
+            }
+        );
 
-        fetch("/api/hospital/departments",{
+        const result = await response.json();
 
-            method:"POST",
+        console.log("Department Save Result:", result);
 
-            headers:{
-                "Content-Type":"application/json"
-            },
+        if (result.status !== "success") {
+            alert(
+                result.message ||
+                "Failed to save departments."
+            );
+            return;
+        }
 
-            body:JSON.stringify(payload)
+        showSuccessModal([
+            "Hospital departments saved successfully.",
+            "Selected departments have been saved."
+        ]);
 
-        });
+    }
+    catch(error) {
 
-        ===================================================
-        */
+        console.error(
+            "Department save error:",
+            error
+        );
 
+        alert(
+            "Unable to save departments."
+        );
+
+    }
         showSuccessModal([
 
             "Hospital departments saved successfully.",

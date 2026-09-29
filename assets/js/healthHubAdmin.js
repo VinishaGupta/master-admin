@@ -65,7 +65,7 @@ const healthHubAdmin = {
      * Backend must protect this route from
      * unauthenticated/direct access.
      */
-    url: "health-hub-admin/dashboard.php",
+    url: "/hospitaladmin/health-hub-admin/dashboard.php",
 
     features: [
 

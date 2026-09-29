@@ -1,147 +1,385 @@
 /* ==========================================================
-                CONTROLLED BY
+   CONTROLLED BY
+   PUBLIC + PRIVATE HEALTHCARE
 ========================================================== */
 
 let publicSystems = [];
 let privateSystems = [];
+
 let selectedControlled = null;
 
 
 /* ==========================================================
-                API URLs
+   PROJECT ADMIN APIs
 ========================================================== */
 
-const PUBLIC_API =
-    "http://localhost/MultiDigi---Admin/Hospital-Admin_Backend/api/public-healthcare/get.php";
+const PUBLIC_HEALTHCARE_MASTER_URL =
+    "https://livtara.in/multiadmin/Hospital-Admin_Backend/api/public-healthcare/get.php";
 
-const PRIVATE_API =
-    "http://localhost/MultiDigi---Admin/Hospital-Admin_Backend/api/private-healthcare/get.php";
+const PRIVATE_HEALTHCARE_MASTER_URL =
+    "https://livtara.in/multiadmin/Hospital-Admin_Backend/api/private-healthcare/get.php";
 
 
 /* ==========================================================
-                INITIALIZE
+   HEALTH HUB ADMIN API
+========================================================== */
+
+const PUBLIC_HEALTHCARE_SELECTED_URL =
+    "https://livtara.in/superadmin/master/health-hub-admin/api/public-healthcare/get.php";
+
+const PUBLIC_HEALTHCARE_SAVE_URL =
+    "https://livtara.in/superadmin/master/health-hub-admin/api/public-healthcare/save.php";
+
+
+/* ==========================================================
+   INITIALIZE
 ========================================================== */
 
 function initializeControlledBy() {
 
-    console.log("Controlled By Loaded");
+    console.log("====================================");
+    console.log("CONTROLLED BY INITIALIZED");
+    console.log("====================================");
 
     loadControlledData();
-
 }
 
 
 /* ==========================================================
-                LOAD DATA
+   LOAD DATA
 ========================================================== */
 
 async function loadControlledData() {
 
+    /* ======================================================
+       PUBLIC HEALTHCARE
+    ====================================================== */
+
     try {
 
-        const [publicResponse, privateResponse] = await Promise.all([
+        console.log(
+            "1. Loading Public Healthcare..."
+        );
 
-            fetch(PUBLIC_API),
-
-            fetch(PRIVATE_API)
-
-        ]);
-
-
-        if (!publicResponse.ok) {
-
-            throw new Error(
-                "Public Healthcare API returned " +
-                publicResponse.status
+        const response =
+            await fetch(
+                PUBLIC_HEALTHCARE_MASTER_URL
             );
 
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Public API HTTP " +
+                response.status
+            );
         }
 
 
-        if (!privateResponse.ok) {
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Public API Response:",
+            data
+        );
+
+
+        if (!Array.isArray(data)) {
 
             throw new Error(
-                "Private Healthcare API returned " +
-                privateResponse.status
+                "Public API did not return an array."
             );
-
         }
 
 
-        const publicData = await publicResponse.json();
+        publicSystems =
+            data.map(item => ({
 
-        const privateData = await privateResponse.json();
+                id: Number(item.id),
 
+                name: String(
+                    item.name || ""
+                )
 
-        console.log("Public Healthcare Data:", publicData);
-
-        console.log("Private Healthcare Data:", privateData);
-
-
-        /*
-        The PHP APIs return:
-
-        [
-            {
-                id: 1,
-                name: "Government Hospital"
-            }
-        ]
-        */
-
-        publicSystems = Array.isArray(publicData)
-            ? publicData
-            : [];
+            }));
 
 
-        privateSystems = Array.isArray(privateData)
-            ? privateData
-            : [];
-
-
-        createControlledCards(
-            publicSystems,
-            "publicGrid"
-        );
-
-
-        createControlledCards(
-            privateSystems,
-            "privateGrid"
-        );
-
-
-        updateSelected();
-
-        initializeControlledSearch();
-
-
-    } catch (error) {
-
-        console.error(
-            "Controlled By API Error:",
-            error
-        );
-
-
-        showControlledError(
-            "publicGrid",
-            "Unable to load Public Healthcare Systems."
-        );
-
-
-        showControlledError(
-            "privateGrid",
-            "Unable to load Private Healthcare Systems."
+        console.log(
+            "Public Systems:",
+            publicSystems
         );
 
     }
 
+    catch (error) {
+
+        console.error(
+            "PUBLIC HEALTHCARE ERROR:",
+            error
+        );
+
+        publicSystems = [];
+    }
+
+
+
+    /* ======================================================
+       PRIVATE HEALTHCARE
+    ====================================================== */
+
+    try {
+
+        console.log(
+            "2. Loading Private Healthcare..."
+        );
+
+
+        console.log(
+            "Private API URL:",
+            PRIVATE_HEALTHCARE_MASTER_URL
+        );
+
+
+        const response =
+            await fetch(
+                PRIVATE_HEALTHCARE_MASTER_URL,
+                {
+                    method: "GET",
+                    cache: "no-cache"
+                }
+            );
+
+
+        console.log(
+            "Private API HTTP Status:",
+            response.status
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Private API HTTP " +
+                response.status
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Private API Response:",
+            data
+        );
+
+
+        if (!Array.isArray(data)) {
+
+            throw new Error(
+                "Private API did not return an array."
+            );
+        }
+
+
+        privateSystems =
+            data.map(item => ({
+
+                id: Number(item.id),
+
+                name: String(
+                    item.name || ""
+                )
+
+            }));
+
+
+        console.log(
+            "Private Systems:",
+            privateSystems
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "PRIVATE HEALTHCARE ERROR:",
+            error
+        );
+
+        privateSystems = [];
+    }
+
+
+
+    /* ======================================================
+       LOAD PREVIOUS SELECTION
+    ====================================================== */
+
+    try {
+
+        const selectedResponse =
+            await fetch(
+                PUBLIC_HEALTHCARE_SELECTED_URL,
+                {
+                    method: "GET",
+                    cache: "no-cache"
+                }
+            );
+
+
+        if (selectedResponse.ok) {
+
+            const selectedResult =
+                await selectedResponse.json();
+
+
+            console.log(
+                "Saved Healthcare:",
+                selectedResult
+            );
+
+
+            if (
+                selectedResult.status ===
+                "success"
+            ) {
+
+                const selectedData =
+                    selectedResult.data || [];
+
+
+                if (
+                    selectedData.length > 0
+                ) {
+
+                    selectedControlled =
+                        Number(
+                            selectedData[0].id
+                        );
+                }
+            }
+        }
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "Could not load saved selection:",
+            error
+        );
+    }
+
+
+
+    /* ======================================================
+       RENDER
+    ====================================================== */
+
+    console.log(
+        "Final Public Systems:",
+        publicSystems
+    );
+
+    console.log(
+        "Final Private Systems:",
+        privateSystems
+    );
+
+
+    renderControlledWhenReady();
 }
 
 
 /* ==========================================================
-                CREATE CARDS
+   WAIT FOR HTML
+========================================================== */
+
+function renderControlledWhenReady() {
+
+    const publicGrid =
+        document.getElementById(
+            "publicGrid"
+        );
+
+
+    const privateGrid =
+        document.getElementById(
+            "privateGrid"
+        );
+
+
+    console.log(
+        "Public Grid:",
+        publicGrid
+    );
+
+
+    console.log(
+        "Private Grid:",
+        privateGrid
+    );
+
+
+    if (
+        !publicGrid ||
+        !privateGrid
+    ) {
+
+        console.log(
+            "Controlled By HTML not ready. Retrying..."
+        );
+
+
+        setTimeout(
+            renderControlledWhenReady,
+            100
+        );
+
+
+        return;
+    }
+
+
+    console.log(
+        "Controlled By HTML READY"
+    );
+
+
+    /* ======================================================
+       PUBLIC
+    ====================================================== */
+
+    createControlledCards(
+        publicSystems,
+        "publicGrid"
+    );
+
+
+    /* ======================================================
+       PRIVATE
+    ====================================================== */
+
+    createControlledCards(
+        privateSystems,
+        "privateGrid"
+    );
+
+
+    updateSelected();
+
+    initializeControlledSearch();
+}
+
+
+/* ==========================================================
+   CREATE CARDS
 ========================================================== */
 
 function createControlledCards(
@@ -149,110 +387,116 @@ function createControlledCards(
     containerId
 ) {
 
-    const grid = document.getElementById(containerId);
+    const grid =
+        document.getElementById(
+            containerId
+        );
 
 
     if (!grid) {
 
         console.error(
-            "Container not found:",
+            "Grid not found:",
             containerId
         );
 
         return;
-
     }
 
 
     grid.innerHTML = "";
 
 
-    if (!data || data.length === 0) {
+    console.log(
+        "Rendering",
+        data.length,
+        "cards into",
+        containerId
+    );
 
-        grid.innerHTML = `
 
-            <div class="medical-empty">
+    if (data.length === 0) {
 
-                No records found.
-
-            </div>
-
-        `;
+        console.log(
+            "No data for:",
+            containerId
+        );
 
         return;
-
     }
 
 
-    data.forEach(function (item) {
-
-        const name = item.name || "";
+    data.forEach(item => {
 
         const first =
-            name.charAt(0).toUpperCase();
+            item.name
+                .charAt(0)
+                .toUpperCase();
 
 
-        grid.innerHTML += `
-
-            <div class="medical-card">
-
-                <input
-                    type="radio"
-                    name="controlledBy"
-                    id="controlled${item.id}"
-                    value="${item.id}"
-                    ${selectedControlled == item.id ? "checked" : ""}
-                    hidden
-                >
-
-                <label
-                    class="medical-label"
-                    for="controlled${item.id}"
-                >
-
-                    <div class="badge">
-
-                        ${escapeHtml(first)}
-
-                    </div>
+        const isSelected =
+            Number(selectedControlled) ===
+            Number(item.id);
 
 
-                    <h3>
-
-                        ${escapeHtml(name)}
-
-                    </h3>
-
-
-                    <p>
-
-                        Healthcare Authority
-
-                    </p>
+        const card =
+            document.createElement(
+                "div"
+            );
 
 
-                    <div class="tick">
+        card.className =
+            "medical-card";
 
-                        <i class="fa-solid fa-check"></i>
 
-                    </div>
+        card.innerHTML = `
 
-                </label>
+            <input
+                type="radio"
+                name="controlledBy"
+                id="controlled-${containerId}-${item.id}"
+                value="${item.id}"
+                ${isSelected ? "checked" : ""}
+                hidden
+            >
 
-            </div>
+            <label
+                class="medical-label"
+                for="controlled-${containerId}-${item.id}"
+            >
+
+                <div class="badge">
+                    ${first}
+                </div>
+
+                <h3>
+                    ${item.name}
+                </h3>
+
+                <p>
+                    Healthcare Authority
+                </p>
+
+                <div class="tick">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+            </label>
 
         `;
+
+
+        grid.appendChild(card);
 
     });
 
 
     attachControlledEvents();
-
 }
 
 
 /* ==========================================================
-                ATTACH RADIO EVENTS
+   RADIO EVENTS
 ========================================================== */
 
 function attachControlledEvents() {
@@ -261,27 +505,27 @@ function attachControlledEvents() {
         .querySelectorAll(
             "input[name='controlledBy']"
         )
-        .forEach(function (radio) {
+        .forEach(radio => {
 
-            radio.addEventListener(
-                "change",
+            radio.onchange =
                 function () {
 
                     selectedControlled =
-                        this.value;
+                        Number(
+                            this.value
+                        );
+
 
                     updateSelected();
 
-                }
-            );
+                };
 
         });
-
 }
 
 
 /* ==========================================================
-                UPDATE SELECTED
+   SELECTED NAME
 ========================================================== */
 
 function updateSelected() {
@@ -293,61 +537,44 @@ function updateSelected() {
 
 
     if (!label) {
-
         return;
-
     }
 
 
-    const checked =
-        document.querySelector(
-            "input[name='controlledBy']:checked"
-        );
-
-
-    if (!checked) {
-
-        label.innerText = "None";
-
-        return;
-
-    }
-
-
-    const selectedId =
-        String(checked.value);
-
-
-    const allSystems =
-        publicSystems.concat(
-            privateSystems
-        );
-
-
-    const selectedItem =
-        allSystems.find(function (item) {
-
-            return String(item.id) === selectedId;
-
-        });
-
-
-    if (selectedItem) {
+    if (
+        selectedControlled === null
+    ) {
 
         label.innerText =
-            selectedItem.name;
+            "None";
 
-    } else {
-
-        label.innerText = "None";
-
+        return;
     }
 
+
+    const allSystems = [
+        ...publicSystems,
+        ...privateSystems
+    ];
+
+
+    const selected =
+        allSystems.find(
+            item =>
+                Number(item.id) ===
+                Number(selectedControlled)
+        );
+
+
+    label.innerText =
+        selected
+            ? selected.name
+            : "None";
 }
 
 
 /* ==========================================================
-                SEARCH
+   SEARCH
 ========================================================== */
 
 function initializeControlledSearch() {
@@ -359,58 +586,200 @@ function initializeControlledSearch() {
 
 
     if (!input) {
-
         return;
-
     }
 
 
-    input.oninput = function () {
+    input.onkeyup =
+        function () {
 
-        const value =
-            input.value
-                .trim()
-                .toLowerCase();
-
-
-        const filteredPublic =
-            publicSystems.filter(function (item) {
-
-                return String(item.name || "")
+            const value =
+                input.value
                     .toLowerCase()
-                    .includes(value);
-
-            });
+                    .trim();
 
 
-        const filteredPrivate =
-            privateSystems.filter(function (item) {
-
-                return String(item.name || "")
-                    .toLowerCase()
-                    .includes(value);
-
-            });
-
-
-        createControlledCards(
-            filteredPublic,
-            "publicGrid"
-        );
+            const filteredPublic =
+                publicSystems.filter(
+                    item =>
+                        item.name
+                            .toLowerCase()
+                            .includes(value)
+                );
 
 
-        createControlledCards(
-            filteredPrivate,
-            "privateGrid"
-        );
+            const filteredPrivate =
+                privateSystems.filter(
+                    item =>
+                        item.name
+                            .toLowerCase()
+                            .includes(value)
+                );
 
-    };
 
+            createControlledCards(
+                filteredPublic,
+                "publicGrid"
+            );
+
+
+            createControlledCards(
+                filteredPrivate,
+                "privateGrid"
+            );
+
+        };
 }
 
 
 /* ==========================================================
-                RESET
+   SAVE
+========================================================== */
+
+document.addEventListener(
+    "click",
+    async function (event) {
+
+        const button =
+            event.target.closest(
+                ".save-controlled"
+            );
+
+
+        if (!button) {
+            return;
+        }
+
+
+        if (
+            selectedControlled === null
+        ) {
+
+            alert(
+                "Please select a Healthcare System."
+            );
+
+            return;
+        }
+
+
+        const publicData =
+            publicSystems.map(
+                item => ({
+
+                    id: item.id,
+
+                    name: item.name,
+
+                    selected:
+                        Number(item.id) ===
+                        Number(selectedControlled)
+                            ? 1
+                            : 0
+
+                })
+            );
+
+
+        const privateData =
+            privateSystems.map(
+                item => ({
+
+                    id: item.id,
+
+                    name: item.name,
+
+                    selected:
+                        Number(item.id) ===
+                        Number(selectedControlled)
+                            ? 1
+                            : 0
+
+                })
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    PUBLIC_HEALTHCARE_SAVE_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            public_healthcare:
+                                publicData,
+
+                            private_healthcare:
+                                privateData
+
+                        })
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Save Result:",
+                result
+            );
+
+
+            if (
+                result.status ===
+                "success"
+            ) {
+
+                showSuccessModal([
+
+                    "Controlled By details saved successfully.",
+
+                    "Your selected Healthcare Authority has been saved.",
+
+                    "You may continue to the next section."
+
+                ]);
+
+            }
+
+            else {
+
+                alert(
+                    result.message ||
+                    "Failed to save."
+                );
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Save error:",
+                error
+            );
+
+            alert(
+                "Unable to save Controlled By."
+            );
+        }
+
+    }
+);
+
+
+/* ==========================================================
+   RESET
 ========================================================== */
 
 document.addEventListener(
@@ -424,9 +793,7 @@ document.addEventListener(
 
 
         if (!button) {
-
             return;
-
         }
 
 
@@ -434,172 +801,15 @@ document.addEventListener(
             .querySelectorAll(
                 'input[name="controlledBy"]'
             )
-            .forEach(function (radio) {
-
-                radio.checked = false;
-
-            });
+            .forEach(
+                radio =>
+                    radio.checked = false
+            );
 
 
         selectedControlled = null;
-
 
         updateSelected();
 
     }
 );
-
-
-/* ==========================================================
-                SAVE
-========================================================== */
-
-document.addEventListener(
-    "click",
-    function (event) {
-
-        const button =
-            event.target.closest(
-                ".save-controlled"
-            );
-
-
-        if (!button) {
-
-            return;
-
-        }
-
-
-        const selected =
-            document.querySelector(
-                "input[name='controlledBy']:checked"
-            );
-
-
-        if (!selected) {
-
-            alert(
-                "Please select a Healthcare Authority."
-            );
-
-            return;
-
-        }
-
-
-        const controlledBy =
-            selected.value;
-
-
-        console.log(
-            "Selected Controlled By:",
-            controlledBy
-        );
-
-
-        /*
-        For now this only confirms the selection.
-
-        When you have a hospital/user table where
-        this value needs to be stored, POST controlledBy
-        to that API here.
-        */
-
-
-        if (typeof showSuccessModal === "function") {
-
-            showSuccessModal([
-
-                "Controlled By details saved successfully.",
-
-                "Your selected Healthcare Authority has been saved.",
-
-                "You may continue to the next section."
-
-            ]);
-
-        } else {
-
-            alert(
-                "Controlled By details saved successfully."
-            );
-
-        }
-
-    }
-);
-
-
-/* ==========================================================
-                ERROR MESSAGE
-========================================================== */
-
-function showControlledError(
-    containerId,
-    message
-) {
-
-    const container =
-        document.getElementById(containerId);
-
-
-    if (!container) {
-
-        return;
-
-    }
-
-
-    container.innerHTML = `
-
-        <div class="medical-empty">
-
-            ${escapeHtml(message)}
-
-        </div>
-
-    `;
-
-}
-
-
-/* ==========================================================
-                HTML ESCAPE
-========================================================== */
-
-function escapeHtml(value) {
-
-    return String(value)
-
-        .replace(/&/g, "&amp;")
-
-        .replace(/</g, "&lt;")
-
-        .replace(/>/g, "&gt;")
-
-        .replace(/"/g, "&quot;")
-
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* ==========================================================
-                AUTO INITIALIZE
-========================================================== */
-
-if (
-    document.readyState === "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        initializeControlledBy
-    );
-
-} else {
-
-    initializeControlledBy();
-
-}

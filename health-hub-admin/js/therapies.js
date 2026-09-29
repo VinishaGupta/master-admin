@@ -29,7 +29,7 @@ async function loadTherapies() {
     try {
 
         const response = await fetch(
-            "http://localhost:8000/Hospital-Admin_Backend/api/list-of-therapies/get.php"
+            "https://livtara.in/multiadmin/Hospital-Admin_Backend/api/list-of-therapies/get.php"
         );
 
         if (!response.ok) {
@@ -293,46 +293,138 @@ function therapyButtons() {
 
     /* ---------------- SAVE ---------------- */
 
-    const saveButton =
-        document.querySelector(
-            ".therapy-save"
-        );
+    /* ---------------- SAVE ---------------- */
+
+const saveButton =
+    document.querySelector(
+        ".therapy-save"
+    );
 
 
-    if (saveButton) {
+if (saveButton) {
 
-        saveButton.addEventListener(
-            "click",
-            () => {
+    saveButton.addEventListener(
+        "click",
+        async () => {
 
-                const selected =
-                    Array.from(
-                        document.querySelectorAll(
-                            "#therapyList input:checked"
-                        )
-                    ).map(
-                        checkbox => checkbox.value
+            const payload = [];
+
+
+            document
+                .querySelectorAll(
+                    "#therapyList input"
+                )
+                .forEach(checkbox => {
+
+                    const therapyId =
+                        Number(checkbox.value);
+
+
+                    const therapy =
+                        therapies.find(
+                            item =>
+                                Number(item.id) === therapyId
+                        );
+
+
+                    if (!therapy) {
+                        return;
+                    }
+
+
+                    payload.push({
+
+                        therapy_id:
+                            therapyId,
+
+                        therapy_name:
+                            therapy.name || "",
+
+                        selected:
+                            checkbox.checked
+                                ? 1
+                                : 0
+
+                    });
+
+                });
+
+
+            console.log(
+                "Therapy Payload:",
+                payload
+            );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "https://superadmin.livtara.in/master/health-hub-admin/api/therapies/save.php",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                therapies:
+                                    payload
+                            })
+                        }
                     );
 
 
+                const result =
+                    await response.json();
+
+
                 console.log(
-                    "Selected Therapy IDs:",
-                    selected
+                    "Therapy Save Result:",
+                    result
                 );
 
 
-                showSuccessModal([
+                if (
+                    result.status ===
+                    "success"
+                ) {
 
-                    "Therapies saved successfully.",
+                    showSuccessModal([
 
-                    "Backend integration will save the selected therapies."
+                        "Therapies saved successfully."
 
-                ]);
+                    ]);
+
+                } else {
+
+                    alert(
+                        result.message ||
+                        "Failed to save therapies."
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to save therapies:",
+                    error
+                );
+
+                alert(
+                    "Failed to save therapies."
+                );
 
             }
-        );
 
-    }
+        }
+    );
+
+}
 
 }
 

@@ -120,6 +120,20 @@
 
                     </div>
 
+                    <div class="input-group full">
+
+                        <label>
+
+                            Short Description
+
+                        </label>
+
+                        <textarea
+                            name="short_description"
+                            placeholder="Briefly describe your medical firm"></textarea>
+
+                    </div>
+
                     <div class="input-group">
 
                         <label>
@@ -411,7 +425,7 @@
                             name="state"
                             required>
 
-                            <option>
+                            <option value="">
 
                                 Select State
 
@@ -435,7 +449,7 @@
                             name="district"
                             required>
 
-                            <option>
+                            <option value="">
 
                                 Select District
 
@@ -459,7 +473,7 @@
                             name="taluka"
                             required>
 
-                            <option>
+                            <option value="">
 
                                 Select Taluka
 
@@ -484,13 +498,18 @@
                             name="village"
                             required>
 
-                            <option>
+                            <option value="">
 
                                 Select Village
 
                             </option>
 
                         </select>
+
+                        <input
+                            type="hidden"
+                            name="district_short_name"
+                            id="districtShortName">
 
                     </div>
 
@@ -506,9 +525,10 @@
                         </label>
 
                         <select
-                            name="pin_code"
-                            id="pinCode"
-                            required>
+                            name="pin_code_options"
+                            id="pinCodeSelect"
+                            disabled
+                            hidden>
 
                             <!--
                             Backend:
@@ -523,6 +543,17 @@
                             </option>
 
                         </select>
+
+                        <input
+                            type="text"
+                            name="pin_code"
+                            id="pinCode"
+                            inputmode="numeric"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            placeholder="Select a village to auto-fill"
+                            autocomplete="postal-code"
+                            required>
 
                     </div>
 
@@ -625,6 +656,28 @@
                             type="text"
                             name="behind"
                             placeholder="Behind Bank">
+
+                    </div>
+
+                    <!-- HOSPITAL CODE -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Hospital Code
+                        </label>
+
+                        <input
+                            type="text"
+                            id="hospitalCode"
+                            name="hospital_code"
+                            placeholder="Auto Generated"
+                            readonly
+                            autocomplete="off">
+
+                        <small class="field-help">
+                            Automatically generated based on the selected address.
+                        </small>
 
                     </div>
 

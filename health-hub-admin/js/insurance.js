@@ -45,7 +45,7 @@ async function loadInsuranceCompanies(){
     try {
 
         const response = await fetch(
-            "http://localhost:8000/Hospital-Admin_Backend/api/health-insurance-company/get.php"
+            "https://livtara.in/multiadmin/Hospital-Admin_Backend/api/health-insurance-company/get.php"
         );
 
         if(!response.ok){
@@ -323,55 +323,116 @@ function resetInsurance(){
                     SAVE
 ========================================================== */
 
-function saveInsurance(){
+async function saveInsurance(){
 
-    selectedInsurance = [];
+    const payload = [];
+
 
     document
         .querySelectorAll(
-            "#insuranceList input:checked"
+            "#insuranceList input"
         )
         .forEach(box => {
 
-            selectedInsurance.push(
-                Number(box.value)
-            );
+            const companyId =
+                Number(box.value);
+
+
+            const company =
+                insuranceCompanies.find(
+                    item =>
+                        Number(item.id) === companyId
+                );
+
+
+            if (!company) {
+                return;
+            }
+
+
+            payload.push({
+
+                insurance_company_id:
+                    companyId,
+
+                insurance_company_name:
+                    company.name || "",
+
+                selected:
+                    box.checked ? 1 : 0
+
+            });
 
         });
 
+
     console.log(
-        "Selected Insurance IDs:",
-        selectedInsurance
+        "Insurance Payload:",
+        payload
     );
 
-    /*
-    ==========================================================
-                FUTURE BACKEND API
 
-    selectedInsurance contains:
+    try {
 
-    [
-        1,
-        4,
-        8
-    ]
+        const response =
+            await fetch(
+                "https://superadmin.livtara.in/master/health-hub-admin/api/insurance/save.php",
+                {
+                    method: "POST",
 
-    These IDs can later be sent to the backend
-    and linked to the Medical Firm.
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-    ==========================================================
-    */
+                    body: JSON.stringify({
+                        insurance_companies:
+                            payload
+                    })
+                }
+            );
 
-    showSuccessModal([
 
-        "Health Insurance Companies saved successfully.",
+        const result =
+            await response.json();
 
-        "Selected insurance companies have been linked to this medical firm."
 
-    ]);
+        console.log(
+            "Insurance Save Result:",
+            result
+        );
+
+
+        if(result.status === "success"){
+
+            showSuccessModal([
+                "Health Insurance Companies saved successfully."
+            ]);
+
+        } else {
+
+            alert(
+                result.message ||
+                "Failed to save insurance companies."
+            );
+
+        }
+
+
+    } catch(error) {
+
+        console.error(
+            "Failed to save insurance companies:",
+            error
+        );
+
+        alert(
+            "Failed to save insurance companies."
+        );
+
+    }
 
 }
-
 
 /* ==========================================================
                     BUTTONS

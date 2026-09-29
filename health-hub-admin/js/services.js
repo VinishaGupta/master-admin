@@ -9,7 +9,7 @@ let selectedServices = [];
 let deleteServiceId = null;
 
 const BACKEND_URL =
-    "http://localhost:8000/Hospital-Admin_Backend";
+    "https://livtara.in/multiadmin/Hospital-Admin_Backend";
 
 
 /*
@@ -897,26 +897,70 @@ SAVE SELECTED SERVICES
 
 document.addEventListener(
     "click",
-    function(event){
+    async function(event){
 
         if(
-            event.target.closest(
+            !event.target.closest(
                 "#saveServices"
             )
         ){
+            return;
+        }
 
-            console.log(
-                "Selected Services:",
-                selectedServices
+        console.log(
+            "Selected Services:",
+            selectedServices
+        );
+
+        try {
+
+            const response = await fetch(
+                "https://superadmin.livtara.in/master/health-hub-admin/api/services/save.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        services: services.map(service => ({
+                            id: service.id,
+                            name: service.name,
+                            selected: selectedServices.includes(Number(service.id)) ? 1 : 0
+                        }))
+                    })
+                }
             );
 
+            const result = await response.json();
 
-            /*
-            SAVE API WILL BE ADDED HERE
-            */
+            console.log("Save Result:", result);
+
+            if(result.status === "success"){
+
+                alert(
+                    "Selected Services saved successfully."
+                );
+
+            }
+            else{
+
+                alert(
+                    result.message ||
+                    "Failed to save services."
+                );
+
+            }
+
+        }
+        catch(error){
+
+            console.error(
+                "Save Services Error:",
+                error
+            );
 
             alert(
-                "Selected Services saved successfully."
+                "Unable to save services."
             );
 
         }

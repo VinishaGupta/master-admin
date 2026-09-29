@@ -21,9 +21,11 @@
 
         </div>
 
+
         <button
             id="addAwardBtn"
-            class="primary-btn">
+            class="primary-btn"
+            type="button">
 
             <i class="fa-solid fa-plus"></i>
 
@@ -35,8 +37,9 @@
 
 </div>
 
+
 <!-- ==========================================================
-                        AWARDS GRID
+                    AWARDS GRID
 ========================================================== -->
 
 <div
@@ -63,6 +66,7 @@
 
 </div>
 
+
 <!-- ==========================================================
                     ADD / EDIT MODAL
 ========================================================== -->
@@ -73,17 +77,34 @@
 
     <div class="award-modal-content">
 
+
+        <!-- ==================================================
+                            MODAL HEADER
+        ================================================== -->
+
         <div class="modal-header">
 
-            <h2 id="modalHeading">
+            <div>
 
-                Add Hospital Award
+                <h2 id="modalHeading">
 
-            </h2>
+                    Add Hospital Award
+
+                </h2>
+
+                <p class="modal-subtitle">
+
+                    Add details about your hospital award or recognition.
+
+                </p>
+
+            </div>
+
 
             <button
                 id="closeAwardModal"
-                type="button">
+                type="button"
+                aria-label="Close">
 
                 <i class="fa-solid fa-xmark"></i>
 
@@ -91,17 +112,31 @@
 
         </div>
 
+
+        <!-- ==================================================
+                            FORM
+        ================================================== -->
+
         <form id="awardForm">
+
 
             <input
                 type="hidden"
                 id="editingIndex">
 
+
+            <!-- ==================================================
+                                FORM GRID
+            ================================================== -->
+
             <div class="form-grid">
+
+
+                <!-- AWARD TITLE -->
 
                 <div class="input-group">
 
-                    <label>
+                    <label for="awardTitle">
 
                         Award Title
 
@@ -113,13 +148,17 @@
                         type="text"
                         id="awardTitle"
                         maxlength="60"
+                        placeholder="Enter award title"
                         required>
 
                 </div>
 
+
+                <!-- AWARDED BY -->
+
                 <div class="input-group">
 
-                    <label>
+                    <label for="awardBy">
 
                         Awarded By
 
@@ -131,13 +170,17 @@
                         type="text"
                         id="awardBy"
                         maxlength="60"
+                        placeholder="Enter awarding organization"
                         required>
 
                 </div>
 
+
+                <!-- AWARD DATE -->
+
                 <div class="input-group">
 
-                    <label>
+                    <label for="awardDate">
 
                         Award Date
 
@@ -149,13 +192,18 @@
 
                 </div>
 
+
+                <!-- CERTIFICATE IMAGE -->
+
                 <div class="input-group">
 
-                    <label>
+                    <label for="awardImage">
 
                         Certificate Image
 
-                        <span class="required">*</span>
+                        <span class="optional">
+                            Optional
+                        </span>
 
                     </label>
 
@@ -164,42 +212,63 @@
                         id="awardImage"
                         accept=".jpg,.jpeg,.png,.webp">
 
+                    <small class="input-help">
+
+                        JPG, PNG or WEBP • Maximum 5 MB
+
+                    </small>
+
                 </div>
 
             </div>
 
-            <!-- Preview -->
+
+            <!-- ==================================================
+                            IMAGE PREVIEW
+            ================================================== -->
 
             <div
                 class="award-preview"
                 id="previewWrapper">
 
+                <div
+                    class="preview-placeholder"
+                    id="previewPlaceholder">
+
+                    <i class="fa-regular fa-image"></i>
+
+                    <span>
+                        No certificate image selected
+                    </span>
+
+                </div>
+
+
                 <img
-                    id="previewImage">
+                    id="previewImage"
+                    alt="Certificate preview">
 
             </div>
 
-            <!-- Description -->
 
-            <div class="input-group">
+            <!-- ==================================================
+                            DESCRIPTION
+            ================================================== -->
 
-                <label>
+            <div class="input-group description-group">
+
+                <label for="awardDescription">
 
                     Description
 
                 </label>
 
                 <textarea
-
                     id="awardDescription"
-
                     rows="4"
-
                     maxlength="100"
+                    placeholder="Enter a short description..."></textarea>
 
-                    placeholder="Maximum 100 characters...">
-
-                </textarea>
 
                 <div class="character-counter">
 
@@ -215,6 +284,11 @@
 
             </div>
 
+
+            <!-- ==================================================
+                            BUTTONS
+            ================================================== -->
+
             <div class="button-row">
 
                 <button
@@ -225,6 +299,7 @@
                     Cancel
 
                 </button>
+
 
                 <button
                     type="submit"
@@ -244,6 +319,7 @@
 
 </div>
 
+
 <!-- ==========================================================
                     DELETE MODAL
 ========================================================== -->
@@ -254,11 +330,13 @@
 
     <div class="delete-box">
 
+
         <div class="delete-icon">
 
             <i class="fa-solid fa-trash-can"></i>
 
         </div>
+
 
         <h3>
 
@@ -266,15 +344,18 @@
 
         </h3>
 
+
         <p>
 
             This action cannot be undone.
 
         </p>
 
+
         <div class="button-row">
 
             <button
+                type="button"
                 class="secondary-btn"
                 id="cancelDeleteAward">
 
@@ -282,9 +363,13 @@
 
             </button>
 
+
             <button
+                type="button"
                 class="danger-btn"
                 id="confirmDeleteAward">
+
+                <i class="fa-solid fa-trash"></i>
 
                 Delete
 

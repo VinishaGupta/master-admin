@@ -1,0 +1,8 @@
+CREATE TABLE hospital_language (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    english_name VARCHAR(255) NOT NULL,
+    hindi_name VARCHAR(255) NOT NULL,
+    regional_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);

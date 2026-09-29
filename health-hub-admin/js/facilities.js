@@ -73,7 +73,7 @@ const container = document.getElementById("facilityGrid");
     try {
 
         const response = await fetch(
-            "http://localhost:8000/Hospital-Admin_Backend/api/facilities/get.php"
+            "https://livtara.in/multiadmin/Hospital-Admin_Backend/api/facilities/get.php"
         );
 
         const result = await response.json();
@@ -100,7 +100,7 @@ const container = document.getElementById("facilityGrid");
                     </div>
 
                     <img
-                        src="http://localhost:8000/Hospital-Admin_Backend/${item.image}"
+                        src= "https://livtara.in/multiadmin/Hospital-Admin_Backend/${item.image}"
                         class="facility-image"
                         alt="${item.name}">
 
@@ -232,46 +232,111 @@ document.addEventListener(
 
     "click",
 
-    function(event){
+    async function(event){
 
         if(event.target.closest("#saveFacilities")){
 
-            const selectedFacilityIds=[];
+            const payload = [];
+
 
             document.querySelectorAll(
+                ".facility-card"
+            ).forEach(card => {
 
-                ".facility-card.selected"
-
-            ).forEach(card=>{
-
-                selectedFacilityIds.push(
-
-                    Number(card.dataset.id)
-
+                const id = Number(
+                    card.dataset.id
                 );
+
+
+                const facility = facilities.find(
+                    item => Number(item.id) === id
+                );
+
+
+                if (!facility) {
+                    return;
+                }
+
+
+                payload.push({
+
+                    facility_id: id,
+
+                    facility_name:
+                        facility.name || "",
+
+                    selected:
+                        card.classList.contains("selected")
+                            ? 1
+                            : 0
+
+                });
 
             });
 
-            console.log(selectedFacilityIds);
 
-            /*
-            ==============================================
-            BACKEND API
+            console.log(
+                "Facility Payload:",
+                payload
+            );
 
-            POST
 
-            {
-                facility_ids:selectedFacilityIds
+            try {
+
+                const response = await fetch(
+                    "https://superadmin.livtara.in/master/health-hub-admin/api/facilities/save.php",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            facilities: payload
+                        })
+                    }
+                );
+
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "Facility Save Result:",
+                    result
+                );
+
+
+                if(result.status === "success"){
+
+                    showSuccessModal([
+                        "Facilities saved successfully."
+                    ]);
+
+                } else {
+
+                    alert(
+                        result.message ||
+                        "Failed to save facilities."
+                    );
+
+                }
+
+
+            } catch(error) {
+
+                console.error(
+                    "Failed to save facilities:",
+                    error
+                );
+
+                alert(
+                    "Failed to save facilities."
+                );
+
             }
-
-            ==============================================
-            */
-
-            showSuccessModal([
-
-                "Facilities saved successfully."
-
-            ]);
 
         }
 

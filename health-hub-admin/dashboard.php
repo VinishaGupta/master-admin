@@ -1,3 +1,12 @@
+<?php
+
+session_start();
+
+if (empty($_SESSION['healthHubApprovedUser'])) {
+    header('Location: ../index.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,6 +57,8 @@
         <link rel="stylesheet" href="css/advice.css">
         <link rel="stylesheet" href="css/instructions.css">
         <link rel="stylesheet" href="css/advice.css">
+        <link rel="stylesheet" href="css/responsibilities.css">
+        <link rel="stylesheet" href="css/rights.css">
         <link rel="stylesheet" href="css/departments.css">
         <link rel="stylesheet" href="css/hospital-photos.css">
         <link rel="stylesheet" href="css/awarded-by.css">
@@ -104,6 +115,17 @@
         Logout
 
     </button>
+
+    <div
+        class="admin-profile-summary"
+        id="adminProfileSummary"
+        aria-live="polite">
+
+        <i class="fa-solid fa-user-shield"></i>
+
+        <span>Loading approved account...</span>
+
+    </div>
 
 </div>
     
@@ -290,6 +312,28 @@
                             Advice
 
                         </button>
+                        
+                        <!-- 11 -->
+<button
+    class="module-btn submenu-btn"
+    data-section="responsibilities">
+
+    <i class="fa-solid fa-user-check"></i>
+
+    Responsibilities
+
+</button>
+
+<!-- 12 -->
+<button
+    class="module-btn submenu-btn"
+    data-section="rights">
+
+    <i class="fa-solid fa-scale-balanced"></i>
+
+    Rights
+
+</button>
 
                         <!-- 11 -->
                         <button
@@ -413,25 +457,27 @@
 
 <script src="js/api.js"></script>
 
+<script src="js/admin-profile.js"></script>
+
 <script src="js/modal.js"></script>
 
 <script src="js/registration.js"></script>
 
-<script src="js/medical-system.js"></script>
+<script src="js/medical-system.js?v=5"></script>
 
 <script src="js/controlled-by.js"></script>
 
-<script src="js/services.js"></script>
+<script src="js/services.js?v=2"></script>
 
-<script src="js/therapies.js"></script>
+<script src="js/therapies.js?v=3"></script>
 
-<script src="js/insurance.js"></script>
+<script src="js/insurance.js?v=3"></script>
 
-<script src="js/facilities.js"></script>
+<script src="js/facilities.js?v=2"></script>
 
 <script src="js/section-loader.js"></script>
 
-<script src="js/medical-firm-type.js"></script>
+<script src="js/medical-firm-type.js?v=1"></script>
 
 <script src="js/hospital-language.js"></script>
 
@@ -441,13 +487,15 @@
 
 <script src="js/instructions.js"></script>
 
-<script src="js/departments.js"></script>
+<script src="js/departments.js?v=3"></script>
 
 <script src="js/hospital-photos.js"></script>
 
-<script src="js/awarded-by.js"></script>
+<script src="js/awarded-by.js?v=1"></script>
 
 <script src="js/emergency.js"></script>
+
+<script src="js/logout.js"></script>
 
 </body>
 

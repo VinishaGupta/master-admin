@@ -2,13 +2,33 @@
                     MEDICAL FIRM TYPE
 ========================================================== */
 
+/*
+    DATA FLOW
+
+    Project Admin
+        ↓
+    types_of_medical_firm/get.php
+        ↓
+    Health Hub Admin
+        ↓
+    Medical Firm Categories
+        ↓
+    Medical Firm Types
+*/
+
 
 /* ==========================================================
-                    API
+                    API URLS
 ========================================================== */
 
-const MEDICAL_FIRM_API =
-    "http://localhost/MultiDigi---Admin/Hospital-Admin_Backend/api/types-of-medical-firm/get.php";
+const MEDICAL_FIRM_MASTER_URL =
+    "https://livtara.in/multiadmin/Hospital-Admin_Backend/api/types-of-medical-firm/get.php";
+
+const MEDICAL_FIRM_SAVE_URL =
+    "https://livtara.in/superadmin/master/health-hub-admin/api/medical-firm-types/save.php";
+
+const MEDICAL_FIRM_SELECTED_URL =
+    "https://livtara.in/superadmin/master/health-hub-admin/api/medical-firm-types/get.php";
 
 
 /* ==========================================================
@@ -28,110 +48,48 @@ let filteredTypes = [];
 
 function initializeMedicalFirmType() {
 
-    const main =
-        document.getElementById("medicalFirmMain");
+    console.log(
+        "Medical Firm Type Section Loaded"
+    );
 
-    const details =
-        document.getElementById("medicalFirmDetails");
-
-
-    /*
-        Your dashboard loads sections dynamically.
-        Therefore, do nothing until the section
-        actually exists.
-    */
-
-    if (!main || !details) {
-
-        return;
-
-    }
-
-
-    /*
-        Prevent duplicate API calls.
-    */
-
-    if (
-        main.dataset.initialized === "true"
-    ) {
-
-        return;
-
-    }
-
-
-    main.dataset.initialized = "true";
-
-
-    loadMedicalFirmData();
+    loadMedicalFirmTypes();
 
 }
 
 
 /* ==========================================================
-                    LOAD DATA FROM API
+                    LOAD PROJECT ADMIN DATA
 ========================================================== */
 
-async function loadMedicalFirmData() {
-
-    const main =
-        document.getElementById(
-            "medicalFirmMain"
-        );
-
-
-    /*
-        IMPORTANT:
-        Never access .innerHTML or .style
-        if the element doesn't exist.
-    */
-
-    if (!main) {
-
-        return;
-
-    }
-
-
-    main.innerHTML = `
-
-        <div style="
-            grid-column:1/-1;
-            background:#fff;
-            border:1px solid #dbeafe;
-            border-radius:16px;
-            padding:30px;
-            text-align:center;
-            color:#64748b;
-        ">
-
-            Loading Medical Firm Categories...
-
-        </div>
-
-    `;
-
+async function loadMedicalFirmTypes() {
 
     try {
 
+        console.log(
+            "Loading Medical Firm Types..."
+        );
+
+
         const response =
             await fetch(
-                MEDICAL_FIRM_API,
+                MEDICAL_FIRM_MASTER_URL,
                 {
                     method: "GET",
-                    headers: {
-                        "Accept": "application/json"
-                    },
-                    cache: "no-store"
+                    cache: "no-cache"
                 }
             );
+
+
+        console.log(
+            "Medical Firm API Status:",
+            response.status
+        );
 
 
         if (!response.ok) {
 
             throw new Error(
-                "HTTP Error: " +
+                "Medical Firm API HTTP error: " +
                 response.status
             );
 
@@ -143,18 +101,19 @@ async function loadMedicalFirmData() {
 
 
         console.log(
-            "Medical Firm API Response:",
+            "Project Admin Medical Firm Response:",
             result
         );
 
 
         if (
+            !result ||
             result.status !== true ||
             !Array.isArray(result.data)
         ) {
 
             throw new Error(
-                "Invalid API response."
+                "Invalid Medical Firm API response."
             );
 
         }
@@ -162,140 +121,111 @@ async function loadMedicalFirmData() {
 
         /*
         ======================================================
-                    CREATE CATEGORY STRUCTURE
-        ======================================================
-
-        Database:
-
-        id | category_name | medical_firm_name
-
-        1  | m             | NULL
-        2  | m             | xyz
-        3  | m             | ish
-        4  | hospital      | NULL
-        5  | hospital      | medplus
-
-
-        Converted to:
-
-        m
-            xyz
-            ish
-
-        hospital
-            medplus
+        CONVERT DATABASE ROWS INTO CATEGORY STRUCTURE
         ======================================================
         */
 
         const categoryMap = {};
 
 
-        result.data.forEach(
-            function (row) {
+        result.data.forEach(item => {
 
-                if (
-                    row.category_name === null ||
-                    row.category_name === undefined
-                ) {
-
-                    return;
-
-                }
+            const categoryName =
+                String(
+                    item.category_name || ""
+                ).trim();
 
 
-                const categoryName =
-                    String(
-                        row.category_name
-                    ).trim();
+            const medicalFirmName =
+                String(
+                    item.medical_firm_name || ""
+                ).trim();
 
 
-                if (
-                    categoryName === ""
-                ) {
-
-                    return;
-
-                }
+            if (!categoryName) {
+                return;
+            }
 
 
-                /*
-                    Create category.
-                */
+            /*
+            --------------------------------------------------
+            CREATE CATEGORY
+            --------------------------------------------------
+            */
 
-                if (
-                    !categoryMap[categoryName]
-                ) {
+            if (!categoryMap[categoryName]) {
 
-                    categoryMap[categoryName] = {
+                categoryMap[categoryName] = {
 
-                        id: categoryName,
+                    id:
+                        "category-" +
+                        categoryName
+                            .toLowerCase()
+                            .replace(
+                                /[^a-z0-9]+/g,
+                                "-"
+                            ),
 
-                        category_name:
-                            categoryName,
+                    category_name:
+                        categoryName,
 
-                        subtypes: []
+                    subtypes: []
 
-                    };
-
-                }
-
-
-                /*
-                    Add Medical Firm Type.
-
-                    NULL is intentionally ignored.
-                */
-
-                if (
-                    row.medical_firm_name !== null &&
-                    row.medical_firm_name !== undefined
-                ) {
-
-                    const firmName =
-                        String(
-                            row.medical_firm_name
-                        ).trim();
-
-
-                    if (
-                        firmName !== ""
-                    ) {
-
-                        categoryMap[
-                            categoryName
-                        ]
-                        .subtypes
-                        .push({
-
-                            id:
-                                Number(
-                                    row.id
-                                ),
-
-                            name:
-                                firmName,
-
-                            selected:
-                                false
-
-                        });
-
-                    }
-
-                }
+                };
 
             }
-        );
+
+
+            /*
+            --------------------------------------------------
+            NULL MEDICAL FIRM NAME = CATEGORY ONLY
+            --------------------------------------------------
+            */
+
+            if (
+                medicalFirmName === "" ||
+                medicalFirmName === "null"
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+            --------------------------------------------------
+            ADD MEDICAL FIRM TYPE
+            --------------------------------------------------
+            */
+
+            categoryMap[
+                categoryName
+            ].subtypes.push({
+
+                id:
+                    Number(item.id),
+
+                name:
+                    medicalFirmName,
+
+                selected:
+                    Number(
+                        item.is_selected || 0
+                    ) === 1
+
+            });
+
+        });
 
 
         /*
-            Convert object into array.
+        ======================================================
+        CONVERT OBJECT TO ARRAY
+        ======================================================
         */
 
         medicalFirmCategories =
-            Object.values(
-                categoryMap
-            );
+            Object.values(categoryMap);
 
 
         console.log(
@@ -305,73 +235,31 @@ async function loadMedicalFirmData() {
 
 
         /*
-            Render categories.
+        ======================================================
+        LOAD SAVED HEALTH HUB SELECTIONS
+        ======================================================
         */
 
-        loadMainCategories();
-
-    }
-    catch (error) {
-
-        console.error(
-            "Medical Firm API Error:",
-            error
-        );
+        await loadSavedMedicalFirmTypes();
 
 
         /*
-            Check again because the
-            dynamically loaded section
-            could have disappeared.
+        ======================================================
+        WAIT FOR DYNAMIC HTML
+        ======================================================
         */
 
-        const errorContainer =
-            document.getElementById(
-                "medicalFirmMain"
-            );
+        renderMedicalFirmWhenReady();
 
 
-        if (!errorContainer) {
+    }
 
-            return;
+    catch (error) {
 
-        }
-
-
-        errorContainer.innerHTML = `
-
-            <div style="
-                grid-column:1/-1;
-                background:#fff;
-                border:1px solid #fecaca;
-                border-radius:16px;
-                padding:30px;
-                text-align:center;
-                color:#b91c1c;
-            ">
-
-                <h3 style="
-                    margin-bottom:8px;
-                    color:#b91c1c;
-                ">
-
-                    Unable to load Medical Firm data.
-
-                </h3>
-
-
-                <p style="
-                    margin:0;
-                    color:#64748b;
-                ">
-
-                    Please check the API connection.
-
-                </p>
-
-            </div>
-
-        `;
+        console.error(
+            "Failed to load Medical Firm Types:",
+            error
+        );
 
     }
 
@@ -379,7 +267,159 @@ async function loadMedicalFirmData() {
 
 
 /* ==========================================================
-                LOAD MAIN CATEGORY PAGE
+              LOAD SAVED HEALTH HUB DATA
+========================================================== */
+
+async function loadSavedMedicalFirmTypes() {
+
+    try {
+
+        const response =
+            await fetch(
+                MEDICAL_FIRM_SELECTED_URL,
+                {
+                    method: "GET",
+                    cache: "no-cache"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            console.warn(
+                "Health Hub Medical Firm GET returned:",
+                response.status
+            );
+
+            return;
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Saved Medical Firm Types:",
+            result
+        );
+
+
+        if (
+            !result ||
+            result.status !== true ||
+            !Array.isArray(result.data)
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+        ======================================================
+        APPLY SAVED SELECTIONS
+        ======================================================
+        */
+
+        result.data.forEach(savedItem => {
+
+            const category =
+                medicalFirmCategories.find(
+                    item =>
+                        item.category_name ===
+                        savedItem.category_name
+                );
+
+
+            if (!category) {
+                return;
+            }
+
+
+            const subtype =
+                category.subtypes.find(
+                    item =>
+                        Number(item.id) ===
+                        Number(savedItem.id)
+                );
+
+
+            if (subtype) {
+
+                subtype.selected =
+                    Number(
+                        savedItem.is_selected
+                    ) === 1;
+
+            }
+
+        });
+
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "Could not load saved Medical Firm Types:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+              WAIT FOR DYNAMIC HTML
+========================================================== */
+
+function renderMedicalFirmWhenReady() {
+
+    const main =
+        document.getElementById(
+            "medicalFirmMain"
+        );
+
+
+    const details =
+        document.getElementById(
+            "medicalFirmDetails"
+        );
+
+
+    if (!main || !details) {
+
+        console.log(
+            "Medical Firm HTML not ready yet..."
+        );
+
+
+        setTimeout(
+            renderMedicalFirmWhenReady,
+            100
+        );
+
+
+        return;
+
+    }
+
+
+    console.log(
+        "Medical Firm HTML found. Rendering..."
+    );
+
+
+    loadMainCategories();
+
+}
+
+
+/* ==========================================================
+              LOAD MAIN CATEGORIES
 ========================================================== */
 
 function loadMainCategories() {
@@ -396,38 +436,18 @@ function loadMainCategories() {
         );
 
 
-    /*
-        IMPORTANT:
-        This prevents the exact error
-        you were getting:
-
-        Cannot read properties of null
-        (reading 'style')
-    */
-
     if (!main || !details) {
-
         return;
-
     }
 
 
-    main.style.display =
-        "grid";
+    main.style.display = "grid";
 
-
-    details.style.display =
-        "none";
+    details.style.display = "none";
 
 
     main.innerHTML = "";
 
-
-    /*
-    ==========================================================
-                    NO DATA
-    ==========================================================
-    */
 
     if (
         medicalFirmCategories.length === 0
@@ -435,17 +455,9 @@ function loadMainCategories() {
 
         main.innerHTML = `
 
-            <div style="
-                grid-column:1/-1;
-                background:#fff;
-                border:1px solid #dbeafe;
-                border-radius:16px;
-                padding:30px;
-                text-align:center;
-                color:#64748b;
-            ">
+            <div class="medical-empty-message">
 
-                No Medical Firm Categories Found.
+                No Medical Firm Categories found.
 
             </div>
 
@@ -457,9 +469,9 @@ function loadMainCategories() {
 
 
     /*
-    ==========================================================
-                    CATEGORY COLORS
-    ==========================================================
+    ======================================================
+    CATEGORY COLORS
+    ======================================================
     */
 
     const colors = [
@@ -473,133 +485,95 @@ function loadMainCategories() {
         "#d97706",
         "#0f766e",
         "#e11d48",
-        "#4f46e5",
-        "#0284c7",
-        "#65a30d",
-        "#b91c1c",
-        "#9333ea",
-        "#c2410c",
-        "#0369a1",
-        "#15803d",
-        "#a21caf",
-        "#0d9488",
-        "#ca8a04"
+        "#4f46e5"
 
     ];
 
 
     /*
-    ==========================================================
-                    CREATE CATEGORY CARDS
-    ==========================================================
+    ======================================================
+    CREATE CATEGORY CARDS
+    ======================================================
     */
 
     medicalFirmCategories.forEach(
-        function (category, index) {
+        (category, index) => {
 
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "medical-category-card";
-
-
-            card.dataset.id =
-                category.id;
-
-
-            card.style.setProperty(
-                "--accent",
-                colors[
-                    index % colors.length
-                ]
-            );
-
-
-            const initial =
-                category
-                    .category_name
-                    .charAt(0)
-                    .toUpperCase();
-
-
-            const typeCount =
-                category
-                    .subtypes
-                    .length;
-
-
-            card.innerHTML = `
+            main.innerHTML += `
 
                 <div
-                    class="medical-category-icon"
+                    class="medical-category-card"
+                    data-category-id="${category.category_name}"
+                    style="--accent:${colors[index % colors.length]}"
                 >
 
-                    <span>
+                    <div class="medical-category-icon">
 
-                        ${escapeHTML(
-                            initial
-                        )}
+                        <span>
 
-                    </span>
+                            ${category
+                                .category_name
+                                .charAt(0)
+                                .toUpperCase()}
 
-                </div>
+                        </span>
 
+                    </div>
 
-                <h3>
+                    <h3>
 
-                    ${escapeHTML(
-                        category.category_name
-                    )}
+                        ${category.category_name}
 
-                </h3>
+                    </h3>
 
+                    <p>
 
-                <p>
+                        Click to configure all Medical Firm Types.
 
-                    ${typeCount}
-                    Medical Firm Type
-                    ${typeCount === 1 ? "" : "s"}
-                    available.
+                    </p>
 
-                </p>
+                    <div class="medical-category-arrow">
 
+                        <i class="fa-solid fa-arrow-right"></i>
 
-                <div
-                    class="medical-category-arrow"
-                >
-
-                    <i class="
-                        fa-solid
-                        fa-arrow-right
-                    "></i>
+                    </div>
 
                 </div>
 
             `;
 
+        }
+    );
+
+
+    /*
+    ======================================================
+    CATEGORY CLICK
+    ======================================================
+    */
+
+    document
+        .querySelectorAll(
+            ".medical-category-card"
+        )
+        .forEach(card => {
 
             card.addEventListener(
                 "click",
                 function () {
 
+                    const categoryName =
+                        this.dataset.categoryId;
+
+
                     openCategory(
-                        category.id
+                        categoryName
                     );
 
                 }
             );
 
-
-            main.appendChild(
-                card
-            );
-
-        }
-    );
+        });
 
 }
 
@@ -608,45 +582,44 @@ function loadMainCategories() {
                     OPEN CATEGORY
 ========================================================== */
 
-function openCategory(categoryId) {
+function openCategory(
+    categoryName
+) {
 
     currentCategory =
         medicalFirmCategories.find(
-            function (category) {
-
-                return String(
-                    category.id
-                ) === String(
-                    categoryId
-                );
-
-            }
+            item =>
+                item.category_name ===
+                categoryName
         );
 
 
     if (!currentCategory) {
+
+        console.warn(
+            "Category not found:",
+            categoryName
+        );
 
         return;
 
     }
 
 
-    const main =
-        document.getElementById(
-            "medicalFirmMain"
-        );
+    document.getElementById(
+        "medicalFirmMain"
+    ).style.display = "none";
 
 
-    const details =
-        document.getElementById(
-            "medicalFirmDetails"
-        );
+    document.getElementById(
+        "medicalFirmDetails"
+    ).style.display = "block";
 
 
-    const title =
-        document.getElementById(
-            "firmTitle"
-        );
+    document.getElementById(
+        "firmTitle"
+    ).innerText =
+        currentCategory.category_name;
 
 
     const search =
@@ -655,37 +628,17 @@ function openCategory(categoryId) {
         );
 
 
-    if (
-        !main ||
-        !details ||
-        !title ||
-        !search
-    ) {
+    if (search) {
 
-        return;
+        search.value = "";
 
     }
 
 
-    main.style.display =
-        "none";
-
-
-    details.style.display =
-        "block";
-
-
-    title.innerText =
-        currentCategory.category_name;
-
-
-    search.value =
-        "";
-
-
-    filteredTypes = [
-        ...currentCategory.subtypes
-    ];
+    filteredTypes =
+        [
+            ...currentCategory.subtypes
+        ];
 
 
     renderSubtypeCards(
@@ -696,10 +649,12 @@ function openCategory(categoryId) {
 
 
 /* ==========================================================
-                RENDER SUBTYPE CARDS
+              RENDER MEDICAL FIRM TYPE CARDS
 ========================================================== */
 
-function renderSubtypeCards(types) {
+function renderSubtypeCards(
+    types
+) {
 
     const list =
         document.getElementById(
@@ -709,6 +664,10 @@ function renderSubtypeCards(types) {
 
     if (!list) {
 
+        console.warn(
+            "firmSubtypeList not found."
+        );
+
         return;
 
     }
@@ -717,29 +676,14 @@ function renderSubtypeCards(types) {
     list.innerHTML = "";
 
 
-    /*
-    ==========================================================
-                    NO TYPES
-    ==========================================================
-    */
-
-    if (
-        types.length === 0
-    ) {
+    if (types.length === 0) {
 
         list.innerHTML = `
 
-            <div style="
-                grid-column:1/-1;
-                background:#fff;
-                border:1px solid #dbeafe;
-                border-radius:16px;
-                padding:30px;
-                text-align:center;
-                color:#64748b;
-            ">
+            <div class="medical-empty-message">
 
-                No Medical Firm Types Found.
+                No Medical Firm Types found
+                in this category.
 
             </div>
 
@@ -753,94 +697,83 @@ function renderSubtypeCards(types) {
     }
 
 
-    /*
-    ==========================================================
-                    CREATE TYPE CARDS
-    ==========================================================
-    */
+    types.forEach(type => {
 
-    types.forEach(
-        function (type) {
+        list.innerHTML += `
 
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "firm-subtype-card";
-
-
-            card.dataset.id =
-                type.id;
-
-
-            if (
-                type.selected
-            ) {
-
-                card.classList.add(
-                    "selected"
-                );
-
-            }
-
-
-            card.innerHTML = `
+            <div
+                class="firm-subtype-card ${
+                    type.selected
+                        ? "selected"
+                        : ""
+                }"
+                data-id="${type.id}"
+            >
 
                 <div class="firm-check">
 
-                    <i class="
-                        fa-solid
-                        fa-check
-                    "></i>
+                    <i class="fa-solid fa-check"></i>
 
                 </div>
 
-
                 <h4>
 
-                    ${escapeHTML(
-                        type.name
-                    )}
+                    ${type.name}
 
                 </h4>
 
-            `;
+            </div>
 
+        `;
+
+    });
+
+
+    initializeSubtypeSelection();
+
+
+    updateSelectedCount();
+
+}
+
+
+/* ==========================================================
+              CARD SELECTION
+========================================================== */
+
+function initializeSubtypeSelection() {
+
+    document
+        .querySelectorAll(
+            ".firm-subtype-card"
+        )
+        .forEach(card => {
 
             card.addEventListener(
                 "click",
                 function () {
 
                     if (!currentCategory) {
-
                         return;
-
                     }
 
 
+                    const id =
+                        Number(
+                            this.dataset.id
+                        );
+
+
                     const subtype =
-                        currentCategory
-                            .subtypes
-                            .find(
-                                function (item) {
-
-                                    return Number(
-                                        item.id
-                                    ) === Number(
-                                        type.id
-                                    );
-
-                                }
-                            );
+                        currentCategory.subtypes.find(
+                            item =>
+                                Number(item.id) ===
+                                id
+                        );
 
 
                     if (!subtype) {
-
                         return;
-
                     }
 
 
@@ -848,7 +781,7 @@ function renderSubtypeCards(types) {
                         !subtype.selected;
 
 
-                    card.classList.toggle(
+                    this.classList.toggle(
                         "selected",
                         subtype.selected
                     );
@@ -859,16 +792,7 @@ function renderSubtypeCards(types) {
                 }
             );
 
-
-            list.appendChild(
-                card
-            );
-
-        }
-    );
-
-
-    updateSelectedCount();
+        });
 
 }
 
@@ -886,16 +810,13 @@ function updateSelectedCount() {
 
 
     if (!countElement) {
-
         return;
-
     }
 
 
     if (!currentCategory) {
 
-        countElement.innerText =
-            "0";
+        countElement.innerText = "0";
 
         return;
 
@@ -903,16 +824,9 @@ function updateSelectedCount() {
 
 
     const count =
-        currentCategory
-            .subtypes
-            .filter(
-                function (item) {
-
-                    return item.selected;
-
-                }
-            )
-            .length;
+        currentCategory.subtypes.filter(
+            item => item.selected
+        ).length;
 
 
     countElement.innerText =
@@ -940,32 +854,23 @@ document.addEventListener(
 
 
         if (!currentCategory) {
-
             return;
-
         }
 
 
-        const searchValue =
+        const value =
             event.target.value
                 .toLowerCase()
                 .trim();
 
 
         filteredTypes =
-            currentCategory
-                .subtypes
-                .filter(
-                    function (item) {
-
-                        return item.name
-                            .toLowerCase()
-                            .includes(
-                                searchValue
-                            );
-
-                    }
-                );
+            currentCategory.subtypes.filter(
+                item =>
+                    item.name
+                        .toLowerCase()
+                        .includes(value)
+            );
 
 
         renderSubtypeCards(
@@ -984,21 +889,20 @@ document.addEventListener(
     "click",
     function (event) {
 
-        const backButton =
-            event.target.closest(
+        if (
+            !event.target.closest(
                 "#firmBack"
-            );
-
-
-        if (!backButton) {
+            )
+        ) {
 
             return;
 
         }
 
 
-        currentCategory =
-            null;
+        currentCategory = null;
+
+        filteredTypes = [];
 
 
         loadMainCategories();
@@ -1015,13 +919,11 @@ document.addEventListener(
     "click",
     function (event) {
 
-        const resetButton =
-            event.target.closest(
+        if (
+            !event.target.closest(
                 "#medicalResetButton"
-            );
-
-
-        if (!resetButton) {
+            )
+        ) {
 
             return;
 
@@ -1029,22 +931,17 @@ document.addEventListener(
 
 
         if (!currentCategory) {
-
             return;
-
         }
 
 
-        currentCategory
-            .subtypes
-            .forEach(
-                function (item) {
+        currentCategory.subtypes.forEach(
+            item => {
 
-                    item.selected =
-                        false;
+                item.selected = false;
 
-                }
-            );
+            }
+        );
 
 
         const search =
@@ -1055,17 +952,15 @@ document.addEventListener(
 
         if (search) {
 
-            search.value =
-                "";
+            search.value = "";
 
         }
 
 
-        filteredTypes = [
-
-            ...currentCategory.subtypes
-
-        ];
+        filteredTypes =
+            [
+                ...currentCategory.subtypes
+            ];
 
 
         renderSubtypeCards(
@@ -1082,15 +977,13 @@ document.addEventListener(
 
 document.addEventListener(
     "click",
-    function (event) {
+    async function (event) {
 
-        const saveButton =
-            event.target.closest(
+        if (
+            !event.target.closest(
                 "#firmSave"
-            );
-
-
-        if (!saveButton) {
+            )
+        ) {
 
             return;
 
@@ -1099,158 +992,139 @@ document.addEventListener(
 
         if (!currentCategory) {
 
+            alert(
+                "Please select a Medical Firm Category."
+            );
+
             return;
 
         }
 
 
-        const selectedSubtypeIds =
-            currentCategory
-                .subtypes
-                .filter(
-                    function (item) {
+        /*
+        ======================================================
+        PREPARE ALL TYPES FROM CURRENT CATEGORY
+        ======================================================
+        */
 
-                        return item.selected;
+        const medicalFirmTypes =
+            currentCategory.subtypes.map(
+                item => ({
 
-                    }
-                )
-                .map(
-                    function (item) {
+                    id:
+                        Number(item.id),
 
-                        return Number(
-                            item.id
-                        );
+                    category_name:
+                        currentCategory
+                            .category_name,
 
-                    }
-                );
+                    medical_firm_name:
+                        item.name,
 
+                    is_selected:
+                        item.selected
+                            ? 1
+                            : 0
 
-        console.log({
-
-            category_id:
-                currentCategory.id,
-
-            category_name:
-                currentCategory.category_name,
-
-            subtype_ids:
-                selectedSubtypeIds
-
-        });
+                })
+            );
 
 
-        alert(
-            selectedSubtypeIds.length +
-            " Medical Firm Type(s) selected."
+        console.log(
+            "Saving Medical Firm Types:",
+            medicalFirmTypes
         );
 
-    }
-);
 
+        try {
 
-/* ==========================================================
-                    HTML ESCAPE
-========================================================== */
+            const response =
+                await fetch(
+                    MEDICAL_FIRM_SAVE_URL,
+                    {
+                        method: "POST",
 
-function escapeHTML(value) {
+                        headers: {
 
-    return String(value)
+                            "Content-Type":
+                                "application/json"
 
-        .replace(
-            /&/g,
-            "&amp;"
-        )
+                        },
 
-        .replace(
-            /</g,
-            "&lt;"
-        )
+                        body:
+                            JSON.stringify({
 
-        .replace(
-            />/g,
-            "&gt;"
-        )
+                                medical_firm_types:
+                                    medicalFirmTypes
 
-        .replace(
-            /"/g,
-            "&quot;"
-        )
+                            })
 
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* ==========================================================
-        DYNAMIC SECTION INITIALIZATION
-========================================================== */
-
-/*
-    The dashboard loads medical-firm-type.php
-    dynamically.
-
-    MutationObserver waits for:
-
-        #medicalFirmMain
-        #medicalFirmDetails
-
-    to actually appear.
-*/
-
-const medicalFirmObserver =
-    new MutationObserver(
-        function () {
-
-            const main =
-                document.getElementById(
-                    "medicalFirmMain"
+                    }
                 );
 
 
-            const details =
-                document.getElementById(
-                    "medicalFirmDetails"
+            if (!response.ok) {
+
+                throw new Error(
+                    "Save API HTTP error: " +
+                    response.status
                 );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Medical Firm Save Result:",
+                result
+            );
 
 
             if (
-                main &&
-                details
+                result.status === true
             ) {
 
-                initializeMedicalFirmType();
+                showSuccessModal([
+
+                    currentCategory
+                        .category_name +
+                        " types saved successfully.",
+
+                    "Your selected Medical Firm Types have been saved.",
+
+                    "You may continue to the next section."
+
+                ]);
+
+            }
+
+            else {
+
+                alert(
+                    result.message ||
+                    "Failed to save Medical Firm Types."
+                );
 
             }
 
         }
-    );
+
+        catch (error) {
+
+            console.error(
+                "Medical Firm Save Error:",
+                error
+            );
 
 
-/*
-    Start watching the page.
-*/
+            alert(
+                "Unable to save Medical Firm Types."
+            );
 
-if (
-    document.documentElement
-) {
-
-    medicalFirmObserver.observe(
-        document.documentElement,
-        {
-            childList: true,
-            subtree: true
         }
-    );
 
-}
-
-
-/*
-    Also try immediately in case the
-    section already exists.
-*/
-
-initializeMedicalFirmType();
+    }
+);
